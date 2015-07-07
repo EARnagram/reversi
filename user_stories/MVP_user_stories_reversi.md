@@ -2,7 +2,7 @@
 
 ## Ongoing
 ### Basic Structure
-- Create 8x8 board
+- As a user, I'd like to see an 8x8 board
 - Start with players on center squares
 	- white = 4d, 5e
 	- black = 4e, 5d

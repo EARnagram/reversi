@@ -1,6 +1,39 @@
+* {
+      box-sizing:  border-box;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      height: 100%;
+      width: 100%;
+    }
 
-  body{
+body {
     padding: 0;
     margin: 0;
-  }
+    background-color: black;
+    text-align: center;
+    height: 100%;
+    width:100%;
+}
 
+#game {
+  display: inline-block;
+  margin: 0 auto;
+  height: 550px;
+  width: 550px;
+  margin-top: 50px;
+}
+
+.cells {
+  height: 60px;
+  width: 60px;
+  padding: 2px 2px 2px 2px;
+  background-color: #facade;
+  display: inline-block;
+  border-radius:1px;
+  cursor: pointer;
+}
+
+.cells:hover {
+  background-color: white;
+}
