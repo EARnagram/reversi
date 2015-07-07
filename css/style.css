@@ -10,7 +10,7 @@
 body {
     padding: 0;
     margin: 0;
-    background-color: black;
+    background-color: #780065;
     text-align: center;
     height: 100%;
     width:100%;
@@ -28,12 +28,20 @@ body {
   height: 75px;
   width: 75px;
   padding: 2px 2px 2px 2px;
-  background-color: #facade;
+  background-color: #C100A3;
   display: inline-block;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .cells:hover {
-  background-color: white;
+  background-color: #D150BD;
+}
+
+.X {
+  background-color: #E1005B;
+}
+
+.O {
+  background-color: #780AB9;
 }

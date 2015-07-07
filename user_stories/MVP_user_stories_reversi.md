@@ -8,7 +8,7 @@
 	- white = 4d, 5e
 	- black = 4e, 5d
 - As a user, I'd like each cell to only be played on once
-- As a user, I'd like each player to represent a certain color
+- ~~As a user, I'd like each player to represent a certain color~~
 
 
 ### Move Logic
@@ -27,6 +27,7 @@
 ### Basic Structure
 - As a user, I'd like to see an 8x8 board
 - As a user, I'd like a hover effect to show over cells
+- As a user, I'd like each player to represent a certain color
 
 ### Move Logic
 -
