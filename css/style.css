@@ -19,18 +19,18 @@ body {
 #game {
   display: inline-block;
   margin: 0 auto;
-  height: 550px;
-  width: 550px;
+  height: 700px;
+  width: 700px;
   margin-top: 50px;
 }
 
 .cells {
-  height: 60px;
-  width: 60px;
+  height: 75px;
+  width: 75px;
   padding: 2px 2px 2px 2px;
   background-color: #facade;
   display: inline-block;
-  border-radius:1px;
+  border-radius: 5px;
   cursor: pointer;
 }
 
