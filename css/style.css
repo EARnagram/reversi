@@ -22,7 +22,7 @@ body {
   margin: 0 auto;
   height: 620px;
   width: 620px;
-  margin-top: 50px;
+  margin: 30px auto;
 }
 
 .cells {
@@ -39,10 +39,10 @@ body {
   background-color: #CECDCD;
 }
 
-.black {
+.O {
   background-color: #464646;
 }
 
-.white {
+.X {
   background-color: #EBEBEB;
 }
