@@ -3,7 +3,7 @@
  */
 
 // game element is stored as a variable
-var gameEl = document.getElementById("game");
+var $gameEl = $("#game");
 var black = "#464646"; //style="background-color: rgb(70, 70, 70)";
 var white = "#EBEBEB"; //style="background-color: rgb(235, 235, 235)";
 
@@ -29,52 +29,51 @@ $('.cells').each(function(index, element) {
   }
 })
 
-if (document.getElementsByTagName = 'div') {
-  if (document.getElementsByClassName != "cells played") {
-    gameEl.onclick = function(event) {
-      // log useful debugging info to the user
-      console.log("clicked: ", event, event.target.id);
+$gameEl.on('click', 'div', function() {
+  // prevents selecting a cell twice by adding "played" onto the class name
+  // and removing those divs from option of being clicked.
+  if ($(this).attr("value") !== "_") {
+    return false;
+  } else {
+        // log useful debugging info to the user
+        console.log("clicked: " + this.id);
 
-      // get the actual div that was clicked...
-      var cellsEl = event.target;
+        // grabs cells for alternate turn
+        var $cellsEl = $(this);
 
-      // split out the coordinates based on the id
-      var cellsCoordinates = cellsEl.id.split(",");
+        // split out the coordinates based on the id
+        var cellsCoordinates = this.id.split(",");
 
-      // save the text for the player who's turn it is...
-      var cellsColor = currentTurn;
+        // save the text for the player who's turn it is...
+        var cellsColor = currentTurn;
 
-      // fills cell with current move color
-      cellsEl.style.backgroundColor = cellsColor;
+        // fills cell with current move color
+        this.style.backgroundColor = cellsColor;
 
-      // creates function to alternate turn then runs it
-      var alternateTurn = function() {
-      if (currentTurn === black) {
-          currentTurn = white;
-          $(cellsEl).attr("value", function() {
-            return "X";
-          });
-      } else {
-          currentTurn = black;
-          $(cellsEl).attr("value", function(){
-            return "O";
-          })
+        // creates function to alternate turn then runs it
+        var alternateTurn = function() {
+        if (currentTurn === black) {
+            currentTurn = white;
+            $cellsEl.attr('value', function() {
+              return 'X';
+            });
+        } else {
+            currentTurn = black;
+            $cellsEl.attr('value', function(){
+              return 'O';
+            })
+          }
         }
-      }
-      alternateTurn();
+        alternateTurn();
 
-      //places value on console board with ID coordinates
-      var placeValue = function(y,x) {
-        board[y][x] = $(cellsEl).attr("value");
-      }
-      placeValue(cellsCoordinates[0],cellsCoordinates[1]);
-     }
-  }
-}
+        //places value on console board with ID coordinates
+        var placeValue = function(y,x) {
+          board[y][x] = $(this).attr("value");
+        }
+        placeValue(cellsCoordinates[0],cellsCoordinates[1]);
+       }
+    })
 
-// var placeValue = function(y,x) {
-//   board[y[x]] = $(cellsEl).attr("value");
-// }
 
 // Get a cell's value (change null to "_" and exchange variable values for
 // "X"/"O" on console's board for readability)
@@ -148,11 +147,12 @@ var getDiagonal = function(y,x) {
   var diagonalMinusMinus;
   var diagonalPlusMinus;
   var diagonalMinusPlus;
+  //var diagonal = diagonalPlusPlus + diagonalMinusMinus + diagonalPlusMinus + diagonalMinusPlus;
   while (z<8 && w<8) {
     diagonalPlusPlus = getValueOf(z, w);
     z++;
     w++;
-    return diagonalPlusPlus;
+    console.log(diagonalPlusPlus);
   }
   z = y-1;
   w = x-1;
@@ -160,7 +160,7 @@ var getDiagonal = function(y,x) {
     diagonalMinusMinus = getValueOf(z, w);
     z--;
     w--;
-    return diagonalMinusMinus;
+    console.log(diagonalMinusMinus);
   }
   z = y-1;
   w = x+1;
@@ -168,7 +168,7 @@ var getDiagonal = function(y,x) {
     diagonalMinusPlus = getValueOf(z, w);
     z--;
     w++;
-    return diagonalMinusPlus;
+    console.log(diagonalMinusPlus);
   }
   z = y+1;
   w = x-1;
@@ -176,8 +176,9 @@ var getDiagonal = function(y,x) {
     diagonalPlusMinus = getValueOf(z, w);
     z++;
     w--;
-    return diagonalPlusMinus;
+    console.log(diagonalPlusMinus);
   }
+  //return diagonal;
 }
 
 // Print the whole state of the game.
