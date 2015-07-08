@@ -13,6 +13,7 @@
 - As a user, I'd like the hover effect to preview the result of the move
 - As a user, I'd like the colors to slowly transition so I can see the results of the moves (use jquery ui)
 - As a user, I'd like the colors to compliment each other beautifully
+- As a user, I'd like to see a hover effect that's centered on the cursor
 
 ## Completed
 

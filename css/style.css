@@ -5,12 +5,13 @@
       text-align: center;
       height: 100%;
       width: 100%;
+      font-size: 8px;
     }
 
 body {
     padding: 0;
     margin: 0;
-    background-color: #780065;
+    background-color: #1A1A1B;
     text-align: center;
     height: 100%;
     width:100%;
@@ -19,8 +20,8 @@ body {
 #game {
   display: inline-block;
   margin: 0 auto;
-  height: 700px;
-  width: 700px;
+  height: 620px;
+  width: 620px;
   margin-top: 50px;
 }
 
@@ -28,20 +29,20 @@ body {
   height: 75px;
   width: 75px;
   padding: 2px 2px 2px 2px;
-  background-color: #C100A3;
+  background-color: #858585;
   display: inline-block;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .cells:hover {
-  background-color: #D150BD;
+  background-color: #CECDCD;
 }
 
-.X {
-  background-color: #E1005B;
+.black {
+  background-color: #464646;
 }
 
-.O {
-  background-color: #780AB9;
+.white {
+  background-color: #EBEBEB;
 }
