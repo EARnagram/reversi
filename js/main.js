@@ -29,20 +29,6 @@ $('.cells').each(function(index, element) {
   }
 })
 
-var xMoveLegalUp = function() {
-  var yMinus = cellsCoordinates[0]-1;
-  if (board[yMinus][cellsCoordinates[1]] === "O") {
-    return true;
-  }
-}
-
-var xMoveLegalDown = function() {
-  var yPlus = cellsCoordinates[0]+1;
-  if (board[yPlus][cellsCoordinates[1]] === "O") {
-    return true;
-  }
-}
-
 var xMoveLegalLeft = function() {
   var xMinus = cellsCoordinates[1]-1;
   if (board[cellsCoordinates[0]][xMinus] === "O") {
@@ -81,11 +67,9 @@ var xMoveLegalDiagonalUpLeft = function() {
   }
 }
 
-
-
 var oMoveLegalUp = function() {
   var yMinus = cellsCoordinates[0]-1;
-  if (board[yMinus][cellsCoordinates[1]] === "X") {
+  if ((board[yMinus][cellsCoordinates[1]] === "X")) {
     return true;
   }
 }
@@ -157,81 +141,164 @@ $gameEl.on('click', 'div', function() {
         // split out the coordinates based on the id
         var cellsCoordinates = this.id.split(",");
 
-        var xPlus = cellsCoordinates[1]+1;
-        var xMinus = cellsCoordinates[1]-1;
-        var yPlus = cellsCoordinates[0]+1;
-        var yMinus = cellsCoordinates[0]-1;
+        // var xPlus = cellsCoordinates[1]+1;
+        // var xMinus = cellsCoordinates[1]-1;
+        // var yPlus = cellsCoordinates[0]+1;
+        // var yMinus = cellsCoordinates[0]-1;
 
-        var xMoveLegalDiagonalUpRight = function() {
-            var xPlus = cellsCoordinates[1]+1;
-            var yMinus = cellsCoordinates[0]-1;
-            if (board[yMinus][xPlus] === "O") {
-              if (board[yMinus-1][xPlus+1] === "O") {
-                if (board[yMinus-2][xPlus+2] === "O") {
-                  if (board[yMinus-3][xPlus+3] === "O") {
-                    if (board[yMinus-4][xPlus+4] === "O") {
-                      if (board[yMinus-5][xPlus+5] === "O") {
-                        if (board[yMinus-6][xPlus+6] === "O") {
-                          if (board[yMinus-7][xPlus+7] === "X") {
-                            board[yMinus-6][xPlus+6] = "X";
-                            board[yMinus-5][xPlus+5] = "X";
-                            board[yMinus-4][xPlus+4] = "X";
-                            board[yMinus-3][xPlus+3] = "X";
-                            board[yMinus-2][xPlus+2] = "X";
-                            board[yMinus-1][xPlus+1] = "X";
-                            board[yMinus][xPlus] = "X";
-                          } else {
-                            return false;
-                          }
-                        } else if (board[yMinus-6][xPlus+6] === "X") {
-                            board[yMinus-5][xPlus+5] = "X";
-                            board[yMinus-4][xPlus+4] = "X";
-                            board[yMinus-3][xPlus+3] = "X";
-                            board[yMinus-2][xPlus+2] = "X";
-                            board[yMinus-1][xPlus+1] = "X";
-                            board[yMinus][xPlus] = "X";
-                        } else {
-                          return false;
-                        }
-                      } else if (board[yMinus-5][xPlus+5] === "X") {
-                          board[yMinus-4][xPlus+4] = "X";
-                          board[yMinus-3][xPlus+3] = "X";
-                          board[yMinus-2][xPlus+2] = "X";
-                          board[yMinus-1][xPlus+1] = "X";
-                          board[yMinus][xPlus] = "X";
-                      } else {
-                        return false;
-                    }
-                  } else if (board[yMinus-4][xPlus+4] === "X") {
-                      board[yMinus-3][xPlus+3] = "X";
-                      board[yMinus-2][xPlus+2] = "X";
-                      board[yMinus-1][xPlus+1] = "X";
-                      board[yMinus][xPlus] = "X";
-                  } else {
-                  return false;
-                }
-              } else if (board[yMinus-3][xPlus+3] === "X") {
-                  board[yMinus-2][xPlus+2] = "X";
-                  board[yMinus-1][xPlus+1] = "X";
-                  board[yMinus][xPlus] = "X";
-              } else {
-                return false;
-              }
-            } else if (board[yMinus-2][xPlus+2] === "X") {
-                board[yMinus-1][xPlus+1] = "X";
-                board[yMinus][xPlus] = "X";
-            } else {
-              return false;
-            }
-          } else if (board[yMinus-1][xPlus+1] === "X") {
-              board[yMinus][xPlus] = "X";
+        var xMoveLegalUp = function() {
+          var yMinus = parseInt(cellsCoordinates[0])-1;
+          if ((board[yMinus][cellsCoordinates[1]]=== "O") && (board[yMinus-1][cellsCoordinates[1]]=== "O") && (board[yMinus-2][cellsCoordinates[1]]=== "O") && (board[yMinus-3][cellsCoordinates[1]]=== "O") && (board[yMinus-4][cellsCoordinates[1]]=== "O") && (board[yMinus-5][cellsCoordinates[1]]=== "O") && (board[yMinus-6][cellsCoordinates[1]]=== "X")) {
+            board[yMinus-5][cellsCoordinates[1]]= "X";
+            board[yMinus-4][cellsCoordinates[1]]= "X";
+            board[yMinus-3][cellsCoordinates[1]]= "X";
+            board[yMinus-2][cellsCoordinates[1]]= "X";
+            board[yMinus-1][cellsCoordinates[1]]= "X";
+            board[yMinus][cellsCoordinates[1]]= "X";
+          } else if ((board[yMinus][cellsCoordinates[1]]=== "O") && (board[yMinus-1][cellsCoordinates[1]]=== "O") && (board[yMinus-2][cellsCoordinates[1]]=== "O") && (board[yMinus-3][cellsCoordinates[1]]=== "O") && (board[yMinus-4][cellsCoordinates[1]]=== "O") && (board[yMinus-5][cellsCoordinates[1]]=== "X")) {
+              board[yMinus-4][cellsCoordinates[1]]= "X";
+              board[yMinus-3][cellsCoordinates[1]]= "X";
+              board[yMinus-2][cellsCoordinates[1]]= "X";
+              board[yMinus-1][cellsCoordinates[1]]= "X";
+              board[yMinus][cellsCoordinates[1]]= "X";
+          } else if ((board[yMinus][cellsCoordinates[1]]=== "O") && (board[yMinus-1][cellsCoordinates[1]]=== "O") && (board[yMinus-2][cellsCoordinates[1]]=== "O") && (board[yMinus-3][cellsCoordinates[1]]=== "O") && (board[yMinus-4][cellsCoordinates[1]]=== "X")) {
+              board[yMinus-3][cellsCoordinates[1]]= "X";
+              board[yMinus-2][cellsCoordinates[1]]= "X";
+              board[yMinus-1][cellsCoordinates[1]]= "X";
+              board[yMinus][cellsCoordinates[1]]= "X";
+          } else if ((board[yMinus][cellsCoordinates[1]]=== "O") && (board[yMinus-1][cellsCoordinates[1]]=== "O") && (board[yMinus-2][cellsCoordinates[1]]=== "O") && (board[yMinus-3][cellsCoordinates[1]]=== "X")) {
+              board[yMinus-2][cellsCoordinates[1]]= "X";
+              board[yMinus-1][cellsCoordinates[1]]= "X";
+              board[yMinus][cellsCoordinates[1]]= "X";
+          } else if ((board[yMinus][cellsCoordinates[1]]=== "O") && (board[yMinus-1][cellsCoordinates[1]]=== "O") && (board[yMinus-2][cellsCoordinates[1]]=== "X")) {
+              board[yMinus-1][cellsCoordinates[1]]= "X";
+              board[yMinus][cellsCoordinates[1]]= "X";
+          } else if ((board[yMinus][cellsCoordinates[1]]=== "O") && (board[yMinus-1][cellsCoordinates[1]]=== "X")) {
+              board[yMinus][cellsCoordinates[1]]= "X";
           } else {
             return false;
           }
+        };
+
+        var xMoveLegalDown = function() {
+          var yPlus = parseInt(cellsCoordinates[0])+1;
+          if ((board[yPlus][cellsCoordinates[1]]=== "O") && (board[yPlus+1][cellsCoordinates[1]]=== "O") && (board[yPlus+2][cellsCoordinates[1]]=== "O") && (board[yPlus+3][cellsCoordinates[1]]=== "O") && (board[yPlus+4][cellsCoordinates[1]]=== "O") && (board[yPlus+5][cellsCoordinates[1]]=== "O") && (board[yPlus+6][cellsCoordinates[1]]=== "X")) {
+              board[yPlus+5][cellsCoordinates[1]]= "X";
+              board[yPlus+4][cellsCoordinates[1]]= "X";
+              board[yPlus+3][cellsCoordinates[1]]= "X";
+              board[yPlus+2][cellsCoordinates[1]]= "X";
+              board[yPlus+1][cellsCoordinates[1]]= "X";
+              board[yPlus][cellsCoordinates[1]]= "X";
+          } else if ((board[yPlus][cellsCoordinates[1]]=== "O") && (board[yPlus+1][cellsCoordinates[1]]=== "O") && (board[yPlus+2][cellsCoordinates[1]]=== "O") && (board[yPlus+3][cellsCoordinates[1]]=== "O") && (board[yPlus+4][cellsCoordinates[1]]=== "O") && (board[yPlus+5][cellsCoordinates[1]]=== "X")) {
+              board[yPlus+4][cellsCoordinates[1]]= "X";
+              board[yPlus+3][cellsCoordinates[1]]= "X";
+              board[yPlus+2][cellsCoordinates[1]]= "X";
+              board[yPlus+1][cellsCoordinates[1]]= "X";
+              board[yPlus][cellsCoordinates[1]]= "X";
+          } else if ((board[yPlus][cellsCoordinates[1]]=== "O") && (board[yPlus+1][cellsCoordinates[1]]=== "O") && (board[yPlus+2][cellsCoordinates[1]]=== "O") && (board[yPlus+3][cellsCoordinates[1]]=== "O") && (board[yPlus+4][cellsCoordinates[1]]=== "X")) {
+              board[yPlus+3][cellsCoordinates[1]]= "X";
+              board[yPlus+2][cellsCoordinates[1]]= "X";
+              board[yPlus+1][cellsCoordinates[1]]= "X";
+              board[yPlus][cellsCoordinates[1]]= "X";
+          } else if ((board[yPlus][cellsCoordinates[1]]=== "O") && (board[yPlus+1][cellsCoordinates[1]]=== "O") && (board[yPlus+2][cellsCoordinates[1]]=== "O") && (board[yPlus+3][cellsCoordinates[1]]=== "X")) {
+              board[yPlus+2][cellsCoordinates[1]]= "X";
+              board[yPlus+1][cellsCoordinates[1]]= "X";
+              board[yPlus][cellsCoordinates[1]]= "X";
+          } else if ((board[yPlus][cellsCoordinates[1]]=== "O") && (board[yPlus+1][cellsCoordinates[1]]=== "O") && (board[yPlus+2][cellsCoordinates[1]]=== "X")) {
+              board[yPlus+1][cellsCoordinates[1]]= "X";
+              board[yPlus][cellsCoordinates[1]]= "X";
+          } else if ((board[yPlus][cellsCoordinates[1]]=== "O") && (board[yPlus+1][cellsCoordinates[1]]=== "X")) {
+              board[yPlus][cellsCoordinates[1]]= "X";
           } else {
             return false;
           }
         }
+
+        var xMoveLegalLeft = function() {
+          var xMinus = parseInt(cellsCoordinates[1])-1;
+          if ((board[cellsCoordinates[0]][xMinus] === "O") && (board[cellsCoordinates[0]][xMinus-1] === "O") && (board[cellsCoordinates[0]][xMinus-2] === "O") && (board[cellsCoordinates[0]][xMinus-3] === "O") && (board[cellsCoordinates[0]][xMinus-4] === "O") && (board[cellsCoordinates[0]][xMinus-5] === "O") && (board[cellsCoordinates[0]][xMinus-6] === "X")) {
+              board[cellsCoordinates[0]][xMinus-5] = "X";
+              board[cellsCoordinates[0]][xMinus-4] = "X";
+              board[cellsCoordinates[0]][xMinus-3] = "X";
+              board[cellsCoordinates[0]][xMinus-2] = "X";
+              board[cellsCoordinates[0]][xMinus-1] = "X";
+              board[cellsCoordinates[0]][xMinus] = "X";
+            } else if ((board[cellsCoordinates[0]][xMinus] === "O") && (board[cellsCoordinates[0]][xMinus-1] === "O") && (board[cellsCoordinates[0]][xMinus-2] === "O") && (board[cellsCoordinates[0]][xMinus-3] === "O") && (board[cellsCoordinates[0]][xMinus-4] === "O") && (board[cellsCoordinates[0]][xMinus-5] === "X")) {
+                board[cellsCoordinates[0]][xMinus-4] = "X";
+                board[cellsCoordinates[0]][xMinus-3] = "X";
+                board[cellsCoordinates[0]][xMinus-2] = "X";
+                board[cellsCoordinates[0]][xMinus-1] = "X";
+                board[cellsCoordinates[0]][xMinus] = "X";
+            } else if ((board[cellsCoordinates[0]][xMinus] === "O") && (board[cellsCoordinates[0]][xMinus-1] === "O") && (board[cellsCoordinates[0]][xMinus-2] === "O") && (board[cellsCoordinates[0]][xMinus-3] === "O") && (board[cellsCoordinates[0]][xMinus-4] === "X")) {
+                board[cellsCoordinates[0]][xMinus-3] = "X";
+                board[cellsCoordinates[0]][xMinus-2] = "X";
+                board[cellsCoordinates[0]][xMinus-1] = "X";
+                board[cellsCoordinates[0]][xMinus] = "X";
+            } else if ((board[cellsCoordinates[0]][xMinus] === "O") && (board[cellsCoordinates[0]][xMinus-1] === "O") && (board[cellsCoordinates[0]][xMinus-2] === "O") && (board[cellsCoordinates[0]][xMinus-3] === "X")) {
+                board[cellsCoordinates[0]][xMinus-2] = "X";
+                board[cellsCoordinates[0]][xMinus-1] = "X";
+                board[cellsCoordinates[0]][xMinus] = "X";
+            } else if ((board[cellsCoordinates[0]][xMinus] === "O") && (board[cellsCoordinates[0]][xMinus-1] === "O") && (board[cellsCoordinates[0]][xMinus-2] === "X")) {
+                board[cellsCoordinates[0]][xMinus-1] = "X";
+                board[cellsCoordinates[0]][xMinus] = "X";
+            } else if ((board[cellsCoordinates[0]][xMinus] === "O") && (board[cellsCoordinates[0]][xMinus-1] === "X")) {
+                board[cellsCoordinates[0]][xMinus] = "X";
+            } else {
+              return false;
+            }
+          }
+
+
+
+        // var xMoveLegalDiagonalUpRight = function() {
+        //   var xPlus = parseInt(cellsCoordinates[1])+1;
+        //   var yMinus = parseInt(cellsCoordinates[0])-1;
+        //     if ((board[yMinus][xPlus] === "O") && (board[yMinus-1][xPlus+1] === "O") && (board[yMinus-2][xPlus+2] === "O") && (board[yMinus-3][xPlus+3] === "O") && (board[yMinus-4][xPlus+4] === "O") && (board[yMinus-5][xPlus+5] === "O") && (board[yMinus-6][xPlus+6] === "O") && (board[yMinus-7][xPlus+7] === "X")) {
+        //       board[yMinus-6][xPlus+6] = "X";
+        //       board[yMinus-5][xPlus+5] = "X";
+        //       board[yMinus-4][xPlus+4] = "X";
+        //       board[yMinus-3][xPlus+3] = "X";
+        //       board[yMinus-2][xPlus+2] = "X";
+        //       board[yMinus-1][xPlus+1] = "X";
+        //       board[yMinus][xPlus] = "X";
+        //       console.log("7 changed!");
+        //     } else if ((board[yMinus][xPlus] === "O") && (board[yMinus-1][xPlus+1] === "O") && (board[yMinus-2][xPlus+2] === "O") && (board[yMinus-3][xPlus+3] === "O") && (board[yMinus-4][xPlus+4] === "O") && (board[yMinus-5][xPlus+5] === "O") && (board[yMinus-6][xPlus+6] === "X")) {
+        //       board[yMinus-5][xPlus+5] = "X";
+        //       board[yMinus-4][xPlus+4] = "X";
+        //       board[yMinus-3][xPlus+3] = "X";
+        //       board[yMinus-2][xPlus+2] = "X";
+        //       board[yMinus-1][xPlus+1] = "X";
+        //       board[yMinus][xPlus] = "X";
+        //       console.log("6 changed!");
+        //     } else if ((board[yMinus][xPlus] === "O") && (board[yMinus-1][xPlus+1] === "O") && (board[yMinus-2][xPlus+2] === "O") && (board[yMinus-3][xPlus+3] === "O") && (board[yMinus-4][xPlus+4] === "O") && (board[yMinus-5][xPlus+5] === "X")) {
+        //       board[yMinus-4][xPlus+4] = "X";
+        //       board[yMinus-3][xPlus+3] = "X";
+        //       board[yMinus-2][xPlus+2] = "X";
+        //       board[yMinus-1][xPlus+1] = "X";
+        //       board[yMinus][xPlus] = "X";
+        //       console.log("5 changed!");
+        //     } else if ((board[yMinus][xPlus] === "O") && (board[yMinus-1][xPlus+1] === "O") && (board[yMinus-2][xPlus+2] === "O") && (board[yMinus-3][xPlus+3] === "O") && (board[yMinus-4][xPlus+4] === "X")) {
+        //       board[yMinus-3][xPlus+3] = "X";
+        //       board[yMinus-2][xPlus+2] = "X";
+        //       board[yMinus-1][xPlus+1] = "X";
+        //       board[yMinus][xPlus] = "X";
+        //       console.log("4 changed!");
+        //     } else if (((board[yMinus][xPlus]) === "O") && ((board[yMinus-1][xPlus+1]) === "O") && ((board[yMinus-2][xPlus+2]) === "O") && ((board[yMinus-3][xPlus+3]) === "X")) {
+        //       board[yMinus-2][xPlus+2] = "X";
+        //       board[yMinus-1][xPlus+1] = "X";
+        //       board[yMinus][xPlus] = "X";
+        //       console.log("3 changed!");
+        //     } else if (((board[yMinus][xPlus]) === "O") && ((board[yMinus-1][xPlus+1]) === "O") && ((board[yMinus-2][xPlus+2]) === "X")) {
+        //       board[yMinus-1][xPlus+1] = "X";
+        //       board[yMinus][xPlus] = "X";
+        //       console.log("2 changed!");
+        //     } else if (((board[yMinus][xPlus]) === "O") && ((board[yMinus-1][xPlus+1]) === "O")) {
+        //       board[yMinus][xPlus] = "X";
+        //       console.log("1 changed!");
+        //     } else {
+        //       console.log("Did nothing");
+        //     }
+        //   }
 
         // save the text for the player who's turn it is...
         // var cellsColor = currentTurn;
@@ -253,8 +320,14 @@ $gameEl.on('click', 'div', function() {
             })
           }
         }
+
         alternateTurn();
-        xMoveLegalDiagonalUpRight();
+        xMoveLegalDown();
+        xMoveLegalUp();
+        xMoveLegalLeft();
+        //xMoveLegalDiagonalUpRight();
+
+
         $('.cells').each(function(index, element) {
           if ($(element).attr('value') === "X") {
             element.style.backgroundColor = "#464646";
@@ -270,6 +343,8 @@ $gameEl.on('click', 'div', function() {
         }
         placeValue(cellsCoordinates[0],cellsCoordinates[1]);
        }
+
+      printTheBoard();
     })
 
 
@@ -471,3 +546,74 @@ var clearCells = function() {
         //   console.log("O can play on the LR Diagonal!");
         //   //return true;
         // } //else {return false;};
+
+        // var xMoveLegalDiagonalUpRight = function() {
+        //     var xPlus = cellsCoordinates[1]+1;
+        //     var yMinus = cellsCoordinates[0]-1;
+        //     if (board[yMinus][xPlus] === "O") {
+        //       if (board[yMinus-1][xPlus+1] === "O") {
+        //         if (board[yMinus-2][xPlus+2] === "O") {
+        //           if (board[yMinus-3][xPlus+3] === "O") {
+        //             if (board[yMinus-4][xPlus+4] === "O") {
+        //               if (board[yMinus-5][xPlus+5] === "O") {
+        //                 if (board[yMinus-6][xPlus+6] === "O") {
+        //                   if (board[yMinus-7][xPlus+7] === "X") {
+        //                     board[yMinus-6][xPlus+6] = "X";
+        //                     board[yMinus-5][xPlus+5] = "X";
+        //                     board[yMinus-4][xPlus+4] = "X";
+        //                     board[yMinus-3][xPlus+3] = "X";
+        //                     board[yMinus-2][xPlus+2] = "X";
+        //                     board[yMinus-1][xPlus+1] = "X";
+        //                     board[yMinus][xPlus] = "X";
+        //                   } else {
+        //                     return false;
+        //                   }
+        //                 } else if (board[yMinus-6][xPlus+6] === "X") {
+        //                     board[yMinus-5][xPlus+5] = "X";
+        //                     board[yMinus-4][xPlus+4] = "X";
+        //                     board[yMinus-3][xPlus+3] = "X";
+        //                     board[yMinus-2][xPlus+2] = "X";
+        //                     board[yMinus-1][xPlus+1] = "X";
+        //                     board[yMinus][xPlus] = "X";
+        //                 } else {
+        //                   return false;
+        //                 }
+        //               } else if (board[yMinus-5][xPlus+5] === "X") {
+        //                   board[yMinus-4][xPlus+4] = "X";
+        //                   board[yMinus-3][xPlus+3] = "X";
+        //                   board[yMinus-2][xPlus+2] = "X";
+        //                   board[yMinus-1][xPlus+1] = "X";
+        //                   board[yMinus][xPlus] = "X";
+        //               } else {
+        //                 return false;
+        //             }
+        //           } else if (board[yMinus-4][xPlus+4] === "X") {
+        //               board[yMinus-3][xPlus+3] = "X";
+        //               board[yMinus-2][xPlus+2] = "X";
+        //               board[yMinus-1][xPlus+1] = "X";
+        //               board[yMinus][xPlus] = "X";
+        //           } else {
+        //           return false;
+        //         }
+        //       } else if (board[yMinus-3][xPlus+3] === "X") {
+        //           board[yMinus-2][xPlus+2] = "X";
+        //           board[yMinus-1][xPlus+1] = "X";
+        //           board[yMinus][xPlus] = "X";
+        //       } else {
+        //         return false;
+        //       }
+        //     } else if (board[yMinus-2][xPlus+2] === "X") {
+        //         board[yMinus-1][xPlus+1] = "X";
+        //         board[yMinus][xPlus] = "X";
+        //     } else {
+        //       return false;
+        //     }
+        //   } else if (board[yMinus-1][xPlus+1] === "X") {
+        //       board[yMinus][xPlus] = "X";
+        //   } else {
+        //     return false;
+        //   }
+        //   } else {
+        //     return false;
+        //   }
+        // }
