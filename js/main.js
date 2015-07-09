@@ -29,6 +29,66 @@ $('.cells').each(function(index, element) {
   }
 })
 
+var xMoveLegalUp = function() {
+  var yMinus = cellsCoordinates[0]-1;
+  if (board[yMinus][cellsCoordinates[1]] === "O") {
+    return true;
+  }
+}
+
+var xMoveLegalDown = function() {
+  var yPlus = cellsCoordinates[0]+1;
+  if (board[yPlus][cellsCoordinates[1]] === "O") {
+    return true;
+  }
+}
+
+var xMoveLegalLeft = function() {
+  var xMinus = cellsCoordinates[1]-1;
+  if (board[cellsCoordinates[0]][xMinus] === "O") {
+    return true;
+  }
+}
+
+var xMoveLegalRight = function() {
+  var xPlus = cellsCoordinates[1]+1;
+  if (board[cellsCoordinates[0]][xPlus] === "O"){
+    return true;
+  }
+}
+
+var xMoveLegalDiagonalDownLeft = function() {
+  var xMinus = cellsCoordinates[1]-1;
+  var yPlus = cellsCoordinates[0]+1;
+  if (board[yPlus][xMinus] === "O") {
+    return true;
+  }
+}
+
+var xMoveLegalDiagonalDownRight = function() {
+  var xPlus = cellsCoordinates[1]+1;
+  var yPlus = cellsCoordinates[0]+1;
+  if (board[yPlus][xPlus] === "O") {
+    return true;
+  }
+}
+
+var xMoveLegalDiagonalUpLeft = function() {
+  var yMinus = cellsCoordinates[0]-1;
+  var xMinus = cellsCoordinates[1]-1;
+  if (board[yMinus][xMinus] === "O") {
+    return true;
+  }
+}
+
+var xMoveLegalDiagonalUpRight = function() {
+  var xPlus = cellsCoordinates[1]+1;
+  var yMinus = cellsCoordinates[0]-1;
+  if (board[yMinus][xPlus] === "O") {
+    return true;
+  }
+}
+
 $gameEl.on('click', 'div', function() {
   // prevents selecting a cell twice by adding "played" onto the class name
   // and removing those divs from option of being clicked.
@@ -44,11 +104,19 @@ $gameEl.on('click', 'div', function() {
         // split out the coordinates based on the id
         var cellsCoordinates = this.id.split(",");
 
+        var xPlus = cellsCoordinates[1]+1;
+        var xMinus = cellsCoordinates[1]-1;
+        var yPlus = cellsCoordinates[0]+1;
+        var yMinus = cellsCoordinates[0]-1;
+
+
+
+
         // save the text for the player who's turn it is...
-        var cellsColor = currentTurn;
+        // var cellsColor = currentTurn;
 
         // fills cell with current move color
-        this.style.backgroundColor = cellsColor;
+        // this.style.backgroundColor = cellsColor;
 
         // creates function to alternate turn then runs it
         var alternateTurn = function() {
@@ -65,12 +133,61 @@ $gameEl.on('click', 'div', function() {
           }
         }
         alternateTurn();
+        $('.cells').each(function(index, element) {
+          if ($(element).attr('value') === "X") {
+            element.style.backgroundColor = "#464646";
+          }
+          if ($(element).attr('value') === "O") {
+            element.style.backgroundColor = "#EBEBEB";
+          }
+        })
 
         //places value on console board with ID coordinates
         var placeValue = function(y,x) {
-          board[y][x] = $(this).attr("value");
+          board[y][x] = $cellsEl.attr("value");
         }
         placeValue(cellsCoordinates[0],cellsCoordinates[1]);
+
+        //create function that checks getRow() && getColumn() && getDiagonalLR() && getDiagonalRL()
+        // if (getRow(cellsCoordinates[0]).includes("OOOOOOX")||getRow(cellsCoordinates[0]).includes("OOOOOX")||getRow(cellsCoordinates[0]).includes("OOOOX")||getRow(cellsCoordinates[0]).includes("OOOX")||getRow(cellsCoordinates[0]).includes("OOX")||getRow(cellsCoordinates[0]).includes("OX")) {
+        //   console.log("X can play on the Row!");
+        //   return true;
+        // } //else {return false;};
+
+        // if (getColumn(cellsCoordinates[1]).includes("OOOOOOX")||getColumn(cellsCoordinates[1]).includes("OOOOOX")||getColumn(cellsCoordinates[1]).includes("OOOOX")||getColumn(cellsCoordinates[1]).includes("OOOX")||getColumn(cellsCoordinates[1]).includes("OOX")||getColumn(cellsCoordinates[1]).includes("OX")) {
+        //   console.log("X can play on the Column!");
+        //   return true;
+        // } //else {return false;};
+
+        // if (getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OX")) {
+        //   console.log("X can play on the RL diagonal!");
+        //   return true;
+        // } else {return false;};
+
+        // if (getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OX")) {
+        //   console.log("X can play on the LR diagonal!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getRow(cellsCoordinates[0]).includes("XXXXXXO")||getRow(cellsCoordinates[0]).includes("XXXXXO")||getRow(cellsCoordinates[0]).includes("XXXXO")||getRow(cellsCoordinates[0]).includes("XXXO")||getRow(cellsCoordinates[0]).includes("XXO")||getRow(cellsCoordinates[0]).includes("XO")) {
+        //   console.log("O can play on the Row!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getColumn(cellsCoordinates[1]).includes("XXXXXXO")||getColumn(cellsCoordinates[1]).includes("XXXXXO")||getColumn(cellsCoordinates[1]).includes("XXXXO")||getColumn(cellsCoordinates[1]).includes("XXXO")||getColumn(cellsCoordinates[1]).includes("XXO")||getColumn(cellsCoordinates[1]).includes("XO")) {
+        //   console.log("O can play on the Column!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XO")) {
+        //   console.log("O can play on the RL Diagonal!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XO")) {
+        //   console.log("O can play on the LR Diagonal!");
+        //   //return true;
+        // } //else {return false;};
        }
     })
 
@@ -139,58 +256,62 @@ var getColumn = function(x){
   return row;
 };
 
-// Get a diagonal's value
-var getDiagonal = function(y,x) {
-  var z = y+1;
-  var w = x+1;
-  var diagonalPlusPlus;
-  var diagonalMinusMinus;
-  var diagonalPlusMinus;
-  var diagonalMinusPlus;
-  //var diagonal = diagonalPlusPlus + diagonalMinusMinus + diagonalPlusMinus + diagonalMinusPlus;
+var getDiagonalLR = function(y,x) {
+  var z = y;
+  var w = x;
+  var diagonalPlusPlus = '';
+  var diagonalMinusMinus = '';
   while (z<8 && w<8) {
-    diagonalPlusPlus = getValueOf(z, w);
+    diagonalPlusPlus += getValueOf(z, w).toString();
     z++;
     w++;
-    console.log(diagonalPlusPlus);
   }
   z = y-1;
   w = x-1;
   while (z>=0 && w>=0) {
-    diagonalMinusMinus = getValueOf(z, w);
+    diagonalMinusMinus += getValueOf(z, w).toString();
     z--;
     w--;
-    console.log(diagonalMinusMinus);
   }
-  z = y-1;
-  w = x+1;
+  diagonalMinusMinus = diagonalMinusMinus.split('').reverse().join('');
+  var diagonalLR = diagonalMinusMinus.concat(diagonalPlusPlus);
+  return diagonalLR;
+}
+
+
+// Get a diagonal's value
+var getDiagonalRL = function(y,x) {
+  var z = y;
+  var w = x;
+  var diagonalPlusMinus = '';
+  var diagonalMinusPlus = '';
   while (z>=0 && w<8) {
-    diagonalMinusPlus = getValueOf(z, w);
+    diagonalMinusPlus += getValueOf(z, w).toString();
     z--;
     w++;
-    console.log(diagonalMinusPlus);
   }
   z = y+1;
   w = x-1;
   while (z<8 && w>=0) {
-    diagonalPlusMinus = getValueOf(z, w);
+    diagonalPlusMinus += getValueOf(z, w).toString();
     z++;
-    w--;
-    console.log(diagonalPlusMinus);
+    w--;;
   }
-  //return diagonal;
+  diagonalMinusPlus = diagonalMinusPlus.split('').reverse().join('');
+  var diagonalRL = diagonalMinusPlus.concat(diagonalPlusMinus);
+  return diagonalRL;
 }
 
 // Print the whole state of the game.
-var printTheGame = function(){
-  if (gameIsBeingPlayed) {
-    printTheBoard();
-    console.log(nextPlayerString());
-  } else {
-    console.log("The game is not currently being played.");
-  }
-  return true;
-};
+// var printTheGame = function(){
+//   if (gameIsBeingPlayed) {
+//     printTheBoard();
+//     console.log(nextPlayerString());
+//   } else {
+//     console.log("The game is not currently being played.");
+//   }
+//   return true;
+// };
 
 // Clear board
 var clearTheBoard = function() {
@@ -225,3 +346,5 @@ var clearCells = function() {
   clearTheBoard(); // model
   return true;
 };
+
+
