@@ -13,8 +13,8 @@
 
 ### Move Logic
 - ~~As a user, I'd like black to move first on the first game~~
-- As a user, I'd like to skip a player if that player does not have the option to make a legal move
 - As a user, I'd like for a move to only take place if the player places a piece in such a position that there exists at least one straight (horizontal, vertical, or diagonal) occupied line between the new piece and another piece of their color, with one or more contiguous other player's pieces sandwiched between them
+- As a user, I'd like to skip a player if that player does not have the option to make a legal move
 
 ### Win Logic
 - As a user, I'd like a win to occur when:

@@ -81,17 +81,70 @@ var xMoveLegalDiagonalUpLeft = function() {
   }
 }
 
-var xMoveLegalDiagonalUpRight = function() {
+
+
+var oMoveLegalUp = function() {
+  var yMinus = cellsCoordinates[0]-1;
+  if (board[yMinus][cellsCoordinates[1]] === "X") {
+    return true;
+  }
+}
+
+var oMoveLegalDown = function() {
+  var yPlus = cellsCoordinates[0]+1;
+  if (board[yPlus][cellsCoordinates[1]] === "X") {
+    return true;
+  }
+}
+
+var oMoveLegalLeft = function() {
+  var xMinus = cellsCoordinates[1]-1;
+  if (board[cellsCoordinates[0]][xMinus] === "X") {
+    return true;
+  }
+}
+
+var oMoveLegalRight = function() {
+  var xPlus = cellsCoordinates[1]+1;
+  if (board[cellsCoordinates[0]][xPlus] === "X"){
+    return true;
+  }
+}
+
+var oMoveLegalDiagonalDownLeft = function() {
+  var xMinus = cellsCoordinates[1]-1;
+  var yPlus = cellsCoordinates[0]+1;
+  if (board[yPlus][xMinus] === "X") {
+    return true;
+  }
+}
+
+var oMoveLegalDiagonalDownRight = function() {
+  var xPlus = cellsCoordinates[1]+1;
+  var yPlus = cellsCoordinates[0]+1;
+  if (board[yPlus][xPlus] === "X") {
+    return true;
+  }
+}
+
+var oMoveLegalDiagonalUpLeft = function() {
+  var yMinus = cellsCoordinates[0]-1;
+  var xMinus = cellsCoordinates[1]-1;
+  if (board[yMinus][xMinus] === "X") {
+    return true;
+  }
+}
+
+var oMoveLegalDiagonalUpRight = function() {
   var xPlus = cellsCoordinates[1]+1;
   var yMinus = cellsCoordinates[0]-1;
-  if (board[yMinus][xPlus] === "O") {
+  if (board[yMinus][xPlus] === "X") {
     return true;
   }
 }
 
 $gameEl.on('click', 'div', function() {
-  // prevents selecting a cell twice by adding "played" onto the class name
-  // and removing those divs from option of being clicked.
+  // prevents selecting a cell twice
   if ($(this).attr("value") !== "_") {
     return false;
   } else {
@@ -109,8 +162,76 @@ $gameEl.on('click', 'div', function() {
         var yPlus = cellsCoordinates[0]+1;
         var yMinus = cellsCoordinates[0]-1;
 
-
-
+        var xMoveLegalDiagonalUpRight = function() {
+            var xPlus = cellsCoordinates[1]+1;
+            var yMinus = cellsCoordinates[0]-1;
+            if (board[yMinus][xPlus] === "O") {
+              if (board[yMinus-1][xPlus+1] === "O") {
+                if (board[yMinus-2][xPlus+2] === "O") {
+                  if (board[yMinus-3][xPlus+3] === "O") {
+                    if (board[yMinus-4][xPlus+4] === "O") {
+                      if (board[yMinus-5][xPlus+5] === "O") {
+                        if (board[yMinus-6][xPlus+6] === "O") {
+                          if (board[yMinus-7][xPlus+7] === "X") {
+                            board[yMinus-6][xPlus+6] = "X";
+                            board[yMinus-5][xPlus+5] = "X";
+                            board[yMinus-4][xPlus+4] = "X";
+                            board[yMinus-3][xPlus+3] = "X";
+                            board[yMinus-2][xPlus+2] = "X";
+                            board[yMinus-1][xPlus+1] = "X";
+                            board[yMinus][xPlus] = "X";
+                          } else {
+                            return false;
+                          }
+                        } else if (board[yMinus-6][xPlus+6] === "X") {
+                            board[yMinus-5][xPlus+5] = "X";
+                            board[yMinus-4][xPlus+4] = "X";
+                            board[yMinus-3][xPlus+3] = "X";
+                            board[yMinus-2][xPlus+2] = "X";
+                            board[yMinus-1][xPlus+1] = "X";
+                            board[yMinus][xPlus] = "X";
+                        } else {
+                          return false;
+                        }
+                      } else if (board[yMinus-5][xPlus+5] === "X") {
+                          board[yMinus-4][xPlus+4] = "X";
+                          board[yMinus-3][xPlus+3] = "X";
+                          board[yMinus-2][xPlus+2] = "X";
+                          board[yMinus-1][xPlus+1] = "X";
+                          board[yMinus][xPlus] = "X";
+                      } else {
+                        return false;
+                    }
+                  } else if (board[yMinus-4][xPlus+4] === "X") {
+                      board[yMinus-3][xPlus+3] = "X";
+                      board[yMinus-2][xPlus+2] = "X";
+                      board[yMinus-1][xPlus+1] = "X";
+                      board[yMinus][xPlus] = "X";
+                  } else {
+                  return false;
+                }
+              } else if (board[yMinus-3][xPlus+3] === "X") {
+                  board[yMinus-2][xPlus+2] = "X";
+                  board[yMinus-1][xPlus+1] = "X";
+                  board[yMinus][xPlus] = "X";
+              } else {
+                return false;
+              }
+            } else if (board[yMinus-2][xPlus+2] === "X") {
+                board[yMinus-1][xPlus+1] = "X";
+                board[yMinus][xPlus] = "X";
+            } else {
+              return false;
+            }
+          } else if (board[yMinus-1][xPlus+1] === "X") {
+              board[yMinus][xPlus] = "X";
+          } else {
+            return false;
+          }
+          } else {
+            return false;
+          }
+        }
 
         // save the text for the player who's turn it is...
         // var cellsColor = currentTurn;
@@ -133,6 +254,7 @@ $gameEl.on('click', 'div', function() {
           }
         }
         alternateTurn();
+        xMoveLegalDiagonalUpRight();
         $('.cells').each(function(index, element) {
           if ($(element).attr('value') === "X") {
             element.style.backgroundColor = "#464646";
@@ -147,47 +269,6 @@ $gameEl.on('click', 'div', function() {
           board[y][x] = $cellsEl.attr("value");
         }
         placeValue(cellsCoordinates[0],cellsCoordinates[1]);
-
-        //create function that checks getRow() && getColumn() && getDiagonalLR() && getDiagonalRL()
-        // if (getRow(cellsCoordinates[0]).includes("OOOOOOX")||getRow(cellsCoordinates[0]).includes("OOOOOX")||getRow(cellsCoordinates[0]).includes("OOOOX")||getRow(cellsCoordinates[0]).includes("OOOX")||getRow(cellsCoordinates[0]).includes("OOX")||getRow(cellsCoordinates[0]).includes("OX")) {
-        //   console.log("X can play on the Row!");
-        //   return true;
-        // } //else {return false;};
-
-        // if (getColumn(cellsCoordinates[1]).includes("OOOOOOX")||getColumn(cellsCoordinates[1]).includes("OOOOOX")||getColumn(cellsCoordinates[1]).includes("OOOOX")||getColumn(cellsCoordinates[1]).includes("OOOX")||getColumn(cellsCoordinates[1]).includes("OOX")||getColumn(cellsCoordinates[1]).includes("OX")) {
-        //   console.log("X can play on the Column!");
-        //   return true;
-        // } //else {return false;};
-
-        // if (getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OX")) {
-        //   console.log("X can play on the RL diagonal!");
-        //   return true;
-        // } else {return false;};
-
-        // if (getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OX")) {
-        //   console.log("X can play on the LR diagonal!");
-        //   //return true;
-        // } //else {return false;};
-
-        // if (getRow(cellsCoordinates[0]).includes("XXXXXXO")||getRow(cellsCoordinates[0]).includes("XXXXXO")||getRow(cellsCoordinates[0]).includes("XXXXO")||getRow(cellsCoordinates[0]).includes("XXXO")||getRow(cellsCoordinates[0]).includes("XXO")||getRow(cellsCoordinates[0]).includes("XO")) {
-        //   console.log("O can play on the Row!");
-        //   //return true;
-        // } //else {return false;};
-
-        // if (getColumn(cellsCoordinates[1]).includes("XXXXXXO")||getColumn(cellsCoordinates[1]).includes("XXXXXO")||getColumn(cellsCoordinates[1]).includes("XXXXO")||getColumn(cellsCoordinates[1]).includes("XXXO")||getColumn(cellsCoordinates[1]).includes("XXO")||getColumn(cellsCoordinates[1]).includes("XO")) {
-        //   console.log("O can play on the Column!");
-        //   //return true;
-        // } //else {return false;};
-
-        // if (getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XO")) {
-        //   console.log("O can play on the RL Diagonal!");
-        //   //return true;
-        // } //else {return false;};
-
-        // if (getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XO")) {
-        //   console.log("O can play on the LR Diagonal!");
-        //   //return true;
-        // } //else {return false;};
        }
     })
 
@@ -302,6 +383,17 @@ var getDiagonalRL = function(y,x) {
   return diagonalRL;
 }
 
+// Clear board
+var clearTheBoard = function() {
+  for (var i = 0; i < 8; i++) {
+    for (var j = 0; j < 8; j++) {
+      board[i][j] = null;
+    }
+  }
+  currentTurn = black // reset to black
+  return true;
+};
+
 // Print the whole state of the game.
 // var printTheGame = function(){
 //   if (gameIsBeingPlayed) {
@@ -313,16 +405,7 @@ var getDiagonalRL = function(y,x) {
 //   return true;
 // };
 
-// Clear board
-var clearTheBoard = function() {
-  for (var i = 0; i < 8; i++) {
-    for (var j = 0; j < 8; j++) {
-      board[i][j] = null;
-    }
-  }
-  currentTurn = black // reset to black
-  return true;
-};
+
 
 // Decide if the move is legal or not.
 // var moveIsLegal = function(y, x) {
@@ -348,3 +431,43 @@ var clearCells = function() {
 };
 
 
+        //create function that checks getRow() && getColumn() && getDiagonalLR() && getDiagonalRL()
+        // if (getRow(cellsCoordinates[0]).includes("OOOOOOX")||getRow(cellsCoordinates[0]).includes("OOOOOX")||getRow(cellsCoordinates[0]).includes("OOOOX")||getRow(cellsCoordinates[0]).includes("OOOX")||getRow(cellsCoordinates[0]).includes("OOX")||getRow(cellsCoordinates[0]).includes("OX")) {
+        //   console.log("X can play on the Row!");
+        //   return true;
+        // } //else {return false;};
+
+        // if (getColumn(cellsCoordinates[1]).includes("OOOOOOX")||getColumn(cellsCoordinates[1]).includes("OOOOOX")||getColumn(cellsCoordinates[1]).includes("OOOOX")||getColumn(cellsCoordinates[1]).includes("OOOX")||getColumn(cellsCoordinates[1]).includes("OOX")||getColumn(cellsCoordinates[1]).includes("OX")) {
+        //   console.log("X can play on the Column!");
+        //   return true;
+        // } //else {return false;};
+
+        // if (getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OOX")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("OX")) {
+        //   console.log("X can play on the RL diagonal!");
+        //   return true;
+        // } else {return false;};
+
+        // if (getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OOX")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("OX")) {
+        //   console.log("X can play on the LR diagonal!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getRow(cellsCoordinates[0]).includes("XXXXXXO")||getRow(cellsCoordinates[0]).includes("XXXXXO")||getRow(cellsCoordinates[0]).includes("XXXXO")||getRow(cellsCoordinates[0]).includes("XXXO")||getRow(cellsCoordinates[0]).includes("XXO")||getRow(cellsCoordinates[0]).includes("XO")) {
+        //   console.log("O can play on the Row!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getColumn(cellsCoordinates[1]).includes("XXXXXXO")||getColumn(cellsCoordinates[1]).includes("XXXXXO")||getColumn(cellsCoordinates[1]).includes("XXXXO")||getColumn(cellsCoordinates[1]).includes("XXXO")||getColumn(cellsCoordinates[1]).includes("XXO")||getColumn(cellsCoordinates[1]).includes("XO")) {
+        //   console.log("O can play on the Column!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XXO")||getDiagonalRL(cellsCoordinates[0],cellsCoordinates[1]).includes("XO")) {
+        //   console.log("O can play on the RL Diagonal!");
+        //   //return true;
+        // } //else {return false;};
+
+        // if (getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XXO")||getDiagonalLR(cellsCoordinates[0],cellsCoordinates[1]).includes("XO")) {
+        //   console.log("O can play on the LR Diagonal!");
+        //   //return true;
+        // } //else {return false;};
