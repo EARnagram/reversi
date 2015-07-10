@@ -16,6 +16,8 @@ I used javascript and jquery. I hope to use jquery ui for the future design idea
 ### Design
 To keep the simplicity of the analog board game, I .  The hope is to use a hover function to inform the player of the turn, whether or not a move will be legal, and alert the player when they click in an illegal space by flashing red.
 
+[MVP](user_stories/MVP_user_stories_reversi.md) and [Ice Box](user_stories/icebox_user_stories_reversi.md) user stories.
+
 Unfortunately, I never got to that IceBox user story.
 
 ### Problems
