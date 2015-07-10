@@ -404,8 +404,8 @@ $gameEl.on('click', 'div', function() {
         };
 
         var oMoveLegalUp = function() {
-          if (yMinus >= 0) {
           var yMinus = parseInt(cellsCoordinates[0])-1;
+          if (yMinus >= 0) {
             if ((board[yMinus][cellsCoordinates[1]]=== "X") && (board[yMinus-1][cellsCoordinates[1]]=== "X") && (board[yMinus-2][cellsCoordinates[1]]=== "X") && (board[yMinus-3][cellsCoordinates[1]]=== "X") && (board[yMinus-4][cellsCoordinates[1]]=== "X") && (board[yMinus-5][cellsCoordinates[1]]=== "X") && (board[yMinus-6][cellsCoordinates[1]]=== "O")) {
               board[yMinus-5][cellsCoordinates[1]]= "O";
               board[yMinus-4][cellsCoordinates[1]]= "O";
@@ -674,8 +674,8 @@ $gameEl.on('click', 'div', function() {
         };
 
         var oMoveLegalDiagonalUpLeft = function() {
-          var yMinus = cellsCoordinates[0]-1;
-          var xMinus = cellsCoordinates[1]-1;
+          var yMinus = parseInt(cellsCoordinates[0])-1;
+          var xMinus = parseInt(cellsCoordinates[1])-1;
           if (yMinus >= 0) {
           if ((board[yMinus][xMinus] === "X") && (board[yMinus-1][xMinus-1] === "X") && (board[yMinus-2][xMinus-2] === "X") && (board[yMinus-3][xMinus-3] === "X") && (board[yMinus-4][xMinus-4] === "X") && (board[yMinus-5][xMinus-5] === "X") && (board[yMinus-6][xMinus-6] === "X") && (board[yMinus-7][xMinus-7] === "O")) {
             board[yMinus-6][xMinus-6] = "O";
