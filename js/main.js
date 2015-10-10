@@ -1,5 +1,5 @@
 /*
- * # Reversi
+ * # REVERSI
  */
 
 // game element is stored as a variable
@@ -91,56 +91,64 @@ var getColumn = function(x){
   return row;
 };
 
+
 // Get a diagonal's value (from left to right)
-var getDiagonalLR = function(y,x) {
-  var z = y;
-  var w = x;
+var getDiagonalDownLR = function(y,x) {
+  var z = y+1;
+  var w = x+1;
   var diagonalPlusPlus = '';
-  var diagonalMinusMinus = '';
+
   while (z<8 && w<8) {
     diagonalPlusPlus += getValueOf(z, w).toString();
     z++;
     w++;
   }
-  z = y-1;
-  w = x-1;
+  return diagonalPlusPlus;
+}
+
+var getDiagonalUpLR = function(x,y) {
+  var diagonalMinusMinus = '';
+  var z = y-1;
+  var w = x-1;
   while (z>=0 && w>=0) {
     diagonalMinusMinus += getValueOf(z, w).toString();
     z--;
     w--;
   }
   diagonalMinusMinus = diagonalMinusMinus.split('').reverse().join('');
-  var diagonalLR = diagonalMinusMinus.concat(diagonalPlusPlus);
-  return diagonalLR;
+  return diagonalMinusMinus;
 }
 
 
 // Get a diagonal's value (from right to left)
-var getDiagonalRL = function(y,x) {
-  var z = y;
-  var w = x;
-  var diagonalPlusMinus = '';
+var getDiagonalUpRL = function(y,x) {
+  var z = y-1;
+  var w = x+1;
   var diagonalMinusPlus = '';
   while (z>=0 && w<8) {
     diagonalMinusPlus += getValueOf(z, w).toString();
     z--;
     w++;
   }
-  z = y+1;
-  w = x-1;
+  diagonalMinusPlus = diagonalMinusPlus.split('').reverse().join('');
+  return diagonalMinusPlus;
+}
+
+var getDiagonalDownRL = function(y,x) {
+  var z = y+1;
+  var w = x-1;
+  var diagonalPlusMinus = '';
   while (z<8 && w>=0) {
     diagonalPlusMinus += getValueOf(z, w).toString();
     z++;
     w--;;
   }
-  diagonalMinusPlus = diagonalMinusPlus.split('').reverse().join('');
-  var diagonalRL = diagonalMinusPlus.concat(diagonalPlusMinus);
-  return diagonalRL;
+  return diagonaPlusMinus;
 }
 
 // Regex for finding valid moves
-var validXStr = /O+X/g;
-var validOStr = /X+O/g;
+var validXReg = /\bO+X/g;
+var validOReg = /\bX+O/g;
 
 // Clear board
 var clearTheBoard = function() {
