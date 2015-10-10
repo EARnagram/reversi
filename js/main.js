@@ -6,6 +6,7 @@
 var $gameEl = $("#game");
 
 var gameIsBeingPlayed = false; // true
+
 var piece = function(cssClass) {
   this.count = 2;
   this.cssClass = cssClass;
@@ -15,13 +16,13 @@ var piece = function(cssClass) {
 var playerX = new piece("X");
 var playerO = new piece("O");
 
-var currentTurn = playerO;       // playerX
+var currentTurn = playerX;       // playerX
 var board = [
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
-  [null, null, null, "O", "X", null, null, null],
-  [null, null, null, "X", "O", null, null, null],
+  [null, null, null, null, null, null, null, null],
+  [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null]
@@ -63,32 +64,48 @@ var printTheBoard = function(){
   return true;
 };
 
-// Get a row's value.
-var getRow = function(y){
-  var row =
-    getValueOf(y, 0) +
-    getValueOf(y, 1) +
-    getValueOf(y, 2) +
-    getValueOf(y, 3) +
-    getValueOf(y, 4) +
-    getValueOf(y, 5) +
-    getValueOf(y, 6) +
-    getValueOf(y, 7);
+// Get right row's value.
+var getRightRow = function(y, x){
+  var xSearch = x + 1;
+  var row = '';
+  while (xSearch < 8) {
+    row += getValueOf(y, xSearch);
+    xSearch++;
+  }
   return row;
 };
 
-// Get a column's value.
-var getColumn = function(x){
-  var row =
-    getValueOf(0, x) +
-    getValueOf(1, x) +
-    getValueOf(2, x) +
-    getValueOf(3, x) +
-    getValueOf(4, x) +
-    getValueOf(5, x) +
-    getValueOf(6, x) +
-    getValueOf(7, x);
+// Get left row's value.
+var getLeftRow = function(y, x){
+  var xSearch = x - 1;
+  var row = '';
+  while (xSearch > -1) {
+    row += getValueOf(y, xSearch);
+    xSearch--
+  }
   return row;
+};
+
+// Get down column's value.
+var getColumnDown = function(y,x){
+  var ySearch = y + 1;
+  var column = '';
+  while(ySearch < 8) {
+    column += getValueOf(ySearch, x);
+    ySearch++;
+  }
+  return column;
+};
+
+// Get up column's value.
+var getColumnUp = function(y,x){
+  var ySearch = y - 1;
+  var column = '';
+  while(ySearch > -1) {
+    column += getValueOf(ySearch, x);
+    ySearch--;
+  }
+  return column;
 };
 
 
@@ -141,14 +158,62 @@ var getDiagonalDownRL = function(y,x) {
   while (z<8 && w>=0) {
     diagonalPlusMinus += getValueOf(z, w).toString();
     z++;
-    w--;;
+    w--;
   }
-  return diagonaPlusMinus;
+  return diagonalPlusMinus;
 }
 
 // Regex for finding valid moves
 var validXReg = /\bO+X/g;
 var validOReg = /\bX+O/g;
+
+var validXMove = function(y,x){
+  var valid = [
+               validXReg.test(getDiagonalDownRL(y,x)),
+               validXReg.test(getDiagonalDownLR(y,x)),
+               validXReg.test(getDiagonalUpLR(y,x)),
+               validXReg.test(getDiagonalUpRL(y,x)),
+               validXReg.test(getRightRow(y,x)),
+               validXReg.test(getLeftRow(y,x)),
+               validXReg.test(getColumnDown(y,x)),
+               validXReg.test(getColumnUp(y,x))
+              ];
+  return valid.some(function(regTest) {
+    return regTest;
+  });
+}
+
+var validOMove = function(y,x){
+  var valid = [
+               validOReg.test(getDiagonalDownRL(y,x)),
+               validOReg.test(getDiagonalDownLR(y,x)),
+               validOReg.test(getDiagonalUpLR(y,x)),
+               validOReg.test(getDiagonalUpRL(y,x)),
+               validOReg.test(getRightRow(y,x)),
+               validOReg.test(getLeftRow(y,x)),
+               validOReg.test(getColumnDown(y,x)),
+               validOReg.test(getColumnUp(y,x))
+              ];
+  return valid.some(function(regTest) {
+    return regTest;
+  });
+}
+
+$gameEl.children().click(function(event) {
+  var $elIdArr = event.target.id.split(',');
+  var y = parseInt($elIdArr[0]);
+  var x = parseInt($elIdArr[1]);
+  if (currentTurn === playerO && validOMove(y,x)) {
+    board[y][x] = "O";
+    currentTurn = playerX;
+  } else if (currentTurn === playerX && validXMove(y,x)) {
+    board[y][x] = "X";
+    currentTurn = playerO;
+  } else {
+    console.log("That move is not allowed");
+  }
+})
+
 
 // Clear board
 var clearTheBoard = function() {
