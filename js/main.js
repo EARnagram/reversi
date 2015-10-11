@@ -21,6 +21,9 @@ var piece = function(cssClass) {
 var $xCellsNum = $('cells').hasClass('X').length;
 var $oCellsNum = $('cells').hasClass('O').length;
 
+// Number of cells played
+var $oCellsNum = $('cells').hasClass('played').length;
+
 // Create Players
 var playerX = new piece("X");
 var playerO = new piece("O");
@@ -363,11 +366,11 @@ var render = function() {
   $('.cells').each(function(index, element) {
     if ($(element).attr('value') === "X") {
       if ($(element).hasClass("O")) $(element).removeClass("O");
-      $(element).addClass("X");
+      $(element).addClass("X played");
     }
     if ($(element).attr('value') === "O") {
       if ($(element).hasClass("X")) $(element).removeClass("X");
-      $(element).addClass("O");
+      $(element).addClass("O played");
     }
   });
 };
@@ -390,7 +393,7 @@ var clearTheBoard = function() {
 
 // clear Cells to restart game
 var clearCells = function() {
-  $('.cells').removeClass('X').removeClass('O');
+  $('.cells').removeClass('X played').removeClass('O played');
   $('.cells').attr('value', function() {
     return "_";
   });
@@ -429,7 +432,10 @@ $gameEl.children().click(function(event) {
   var $elIdArr = event.target.id.split(',');
   var y = parseInt($elIdArr[0]);
   var x = parseInt($elIdArr[1]);
-  if (currentTurn === playerO && checkValidMove(validOReg,y,x)) {
+  console.log($(event.target).attr('class'));
+  if ($(event.target).hasClass('played')) {
+    console.log("That move is not allowed - cell already played");
+  } else if (currentTurn === playerO && checkValidMove(validOReg,y,x)) {
     board[y][x] = "O";
     commitValidMove(validOReg,y,x,currentTurn)
     currentTurn = playerX;
