@@ -1,22 +1,34 @@
-/*
- * # REVERSI
- */
+//  ____                         _ 
+// |  _ \ _____   _____ _ __ ___(_)
+// | |_) / _ \ \ / / _ \ '__/ __| |
+// |  _ <  __/\ V /  __/ |  \__ \ |
+// |_| \_\___| \_/ \___|_|  |___/_|
+                                
 
 // game element is stored as a variable
 var $gameEl = $("#game");
 
-var gameIsBeingPlayed = false; // true
+// Set to true when game starts
+var gameIsBeingPlayed = false;
 
+// Piece constructor function
 var piece = function(cssClass) {
   this.count = 2;
   this.cssClass = cssClass;
 }
 
+// Number of cells taken by each player
+var $xCellsNum = $('cells').hasClass('X').length;
+var $oCellsNum = $('cells').hasClass('O').length;
+
 // Create Players
 var playerX = new piece("X");
 var playerO = new piece("O");
 
-var currentTurn = playerX;       // playerX
+// Current Turn varaible
+var currentTurn = playerX;       // playerO
+
+// Board model
 var board = [
   [null, null, null, null, null, null, null, null],
   [null, null, null, null, null, null, null, null],
@@ -108,8 +120,7 @@ var getColumnUp = function(y,x){
   return column;
 };
 
-
-// Get a diagonal's value (from left to right)
+// Get a diagonal's value (bottom right)
 var getDiagonalDownLR = function(y,x) {
   var z = y+1;
   var w = x+1;
@@ -122,6 +133,7 @@ var getDiagonalDownLR = function(y,x) {
   return diagonalPlusPlus;
 }
 
+// Get a diagonal's value (top left)
 var getDiagonalUpLR = function(y,x) {
   var z = y-1;
   var w = x-1;
@@ -134,8 +146,7 @@ var getDiagonalUpLR = function(y,x) {
   return diagonalMinusMinus;
 }
 
-
-// Get a diagonal's value (from right to left)
+// Get a diagonal's value (top right)
 var getDiagonalUpRL = function(y,x) {
   var z = y-1;
   var w = x+1;
@@ -148,6 +159,7 @@ var getDiagonalUpRL = function(y,x) {
   return diagonalMinusPlus;
 }
 
+// Get a diagonal's value (bottom left)
 var getDiagonalDownRL = function(y,x) {
   var z = y+1;
   var w = x-1;
@@ -164,6 +176,7 @@ var getDiagonalDownRL = function(y,x) {
 var validXReg = /\bO+X/g;
 var validOReg = /\bX+O/g;
 
+// If a move is available, will return true
 var checkValidMove = function(reg,y,x){
   var valid = [
                reg.test(getDiagonalDownRL(y,x)),
@@ -180,11 +193,13 @@ var checkValidMove = function(reg,y,x){
   });
 }
 
+// Find length of legal move
 var matchLength = function(reg, str) {
   var len = str.match(reg).join('').length;
   return len;
 }
 
+// Change diagonal's value on model (bottom left)
 var commitDDRL = function(y,x,player,lenDDRL) {
   var z = y+1;
   var w = x-1;
@@ -198,6 +213,7 @@ var commitDDRL = function(y,x,player,lenDDRL) {
   return changes;
 }
 
+// Change diagonal's value on model (bottom right)
 var commitDDLR = function(y,x,player,lenDDLR) {
   var z = y+1;
   var w = x+1;
@@ -211,6 +227,7 @@ var commitDDLR = function(y,x,player,lenDDLR) {
   return changes;
 }
 
+// Change diagonal's value on model (top left)
 var commitDULR = function(y,x,player,lenDULR) {
   var z = y-1;
   var w = x-1;
@@ -224,6 +241,7 @@ var commitDULR = function(y,x,player,lenDULR) {
   return changes;
 }
 
+// Change diagonal's value on model (top right)
 var commitDURL = function(y,x,player,lenDURL) {
   var z = y-1;
   var w = x+1;
@@ -237,6 +255,7 @@ var commitDURL = function(y,x,player,lenDURL) {
   return changes;
 }
 
+// Change row value in model to the right
 var commitRR = function(y,x,player,lenRR) {
   var xSearch = x + 1;
   var changes = [];
@@ -248,6 +267,7 @@ var commitRR = function(y,x,player,lenRR) {
   return changes;
 }
 
+// Change row value in model to the left
 var commitLR = function(y,x,player,lenLR) {
   var xSearch = x - 1;
   var changes = [];
@@ -259,6 +279,7 @@ var commitLR = function(y,x,player,lenLR) {
   return changes;
 }
 
+// Change column value in model below
 var commitCD = function(y,x,player,lenCD) {
   var ySearch = y + 1;
   var changes = [];
@@ -270,6 +291,7 @@ var commitCD = function(y,x,player,lenCD) {
   return changes;
 }
 
+// Change column value in model above
 var commitCU = function(y,x,player,lenCU) {
   var ySearch = y - 1;
   var changes = [];
@@ -329,22 +351,7 @@ var commitValidMove = function(reg,y,x,player) {
 }
 
 
-
-// Clear board
-var clearTheBoard = function() {
-  for (var i = 0; i < 8; i++) {
-    for (var j = 0; j < 8; j++) {
-      board[i][j] = null;
-    }
-  }
-  board[3][4] = "X";
-  board[4][3] = "X";
-  board[3][3] = "O";
-  board[4][4] = "O";
-  currentTurn === playerX         // reset to playerX
-  return true;
-};
-
+// Render model to DOM
 var render = function() {
   for (var i = 0; i < 64; i++) {
     for (var j = 0; j < 8; j++) {
@@ -365,18 +372,59 @@ var render = function() {
   });
 };
 
-// clear Cells to restart game
-var clearCells = function() {
-  var cells = document.getElementsByClassName("cells");
-  for (var i = 0; i < 64; i++) {
-    cells[i].textContent = "";
+// Clear board
+var clearTheBoard = function() {
+  for (var i = 0; i < 8; i++) {
+    for (var j = 0; j < 8; j++) {
+      board[i][j] = null;
+    }
   }
-  clearTheBoard(); // model
-  render();
+  board[3][4] = "X";
+  board[4][3] = "X";
+  board[3][3] = "O";
+  board[4][4] = "O";
+  currentTurn === playerX         // reset to playerX
   return true;
 };
 
 
+// clear Cells to restart game
+var clearCells = function() {
+  $('.cells').removeClass('X').removeClass('O');
+  $('.cells').attr('value', function() {
+    return "_";
+  });
+  clearTheBoard(); // model
+  render();
+  gameIsBeingPlayed = true;
+  return true;
+};
+
+// Hover that tells who's turn and legal move
+// var legalHover = function() {
+//     $( '.cells' ).hover(
+//     function() {
+//       if (currentTurn === playerO) {
+//         if ($( this ).attr('value') === '_') $(this).css('background-color', '#fff');
+//       } else {
+//         if ($( this ).attr('value') === '_') $(this).css('background-color', '#000');
+//       }
+//     }, function() {
+//       $( this ).not(".played").css( "background-color",'#1425CB' );
+//     });
+//   }
+// }
+
+// Win Logic
+var getWinner = function() {
+  if ($xCellsNum + $oCellsNum === 64) {
+    if ($xCellsNum < $oCellsNum)   return "Player O Wins!";
+    if ($xCellsNum > $oCellsNum)   return "Player X Wins!";
+    if ($xCellsNum === $oCellsNum) return "It's a tie!";
+  }
+}
+
+// Click event
 $gameEl.children().click(function(event) {
   var $elIdArr = event.target.id.split(',');
   var y = parseInt($elIdArr[0]);
