@@ -42,7 +42,7 @@ var getValueOf = function(y, x){
 
 //  Get a nice print out of the next user.
 var nextPlayerString = function() {
-  return "It is player " + currentTurn + "'s turn.";
+  return "It is player " + currentTurn.cssClass + "'s turn.";
 }
 
 // Print the board.
@@ -81,7 +81,7 @@ var getLeftRow = function(y, x){
   var row = '';
   while (xSearch > -1) {
     row += getValueOf(y, xSearch);
-    xSearch--
+    xSearch--;
   }
   return row;
 };
@@ -114,7 +114,6 @@ var getDiagonalDownLR = function(y,x) {
   var z = y+1;
   var w = x+1;
   var diagonalPlusPlus = '';
-
   while (z<8 && w<8) {
     diagonalPlusPlus += getValueOf(z, w).toString();
     z++;
@@ -123,16 +122,15 @@ var getDiagonalDownLR = function(y,x) {
   return diagonalPlusPlus;
 }
 
-var getDiagonalUpLR = function(x,y) {
-  var diagonalMinusMinus = '';
+var getDiagonalUpLR = function(y,x) {
   var z = y-1;
   var w = x-1;
+  var diagonalMinusMinus = '';
   while (z>=0 && w>=0) {
     diagonalMinusMinus += getValueOf(z, w).toString();
     z--;
     w--;
   }
-  diagonalMinusMinus = diagonalMinusMinus.split('').reverse().join('');
   return diagonalMinusMinus;
 }
 
@@ -147,7 +145,6 @@ var getDiagonalUpRL = function(y,x) {
     z--;
     w++;
   }
-  diagonalMinusPlus = diagonalMinusPlus.split('').reverse().join('');
   return diagonalMinusPlus;
 }
 
@@ -183,41 +180,152 @@ var checkValidMove = function(reg,y,x){
   });
 }
 
-var printNewString = function(reg, str, player) {
+var matchLength = function(reg, str) {
   var len = str.match(reg).join('').length;
-  var newString = '';
-  for (var i = 0; i < len; i++) {
-    newString += player.cssClass;
-  }
-  return newString;
+  return len;
 }
+
+var commitDDRL = function(y,x,player,lenDDRL) {
+  var z = y+1;
+  var w = x-1;
+  var changes = [];
+  for (var i = 0; i < lenDDRL; i++) {
+    board[z][w] = player.cssClass;
+    changes.push([z,w]);
+    z++;
+    w--;
+  }
+  return changes;
+}
+
+var commitDDLR = function(y,x,player,lenDDLR) {
+  var z = y+1;
+  var w = x+1;
+  var changes = [];
+  for (var i = 0; i < lenDDLR; i++) {
+    board[z][w] = player.cssClass;
+    changes.push([z,w]);
+    z++;
+    w++;
+  }
+  return changes;
+}
+
+var commitDULR = function(y,x,player,lenDULR) {
+  var z = y-1;
+  var w = x-1;
+  var changes = [];
+  for (var i = 0; i < lenDULR; i++) {
+    board[z][w] = player.cssClass;
+    changes.push([z,w]);
+    z--;
+    w--;
+  }
+  return changes;
+}
+
+var commitDURL = function(y,x,player,lenDURL) {
+  var z = y-1;
+  var w = x+1;
+  var changes = [];
+  for (var i = 0; i < lenDURL; i++) {
+    board[z][w] = player.cssClass;
+    changes.push([z,w]);
+    z--;
+    w++;
+  }
+  return changes;
+}
+
+var commitRR = function(y,x,player,lenRR) {
+  var xSearch = x + 1;
+  var changes = [];
+  for (var i = 0; i < lenRR; i++) {
+    board[y][xSearch] = player.cssClass;
+    changes.push([y,xSearch]);
+    xSearch++;
+  }
+  return changes;
+}
+
+var commitLR = function(y,x,player,lenLR) {
+  var xSearch = x - 1;
+  var changes = [];
+  for (var i = 0; i < lenLR; i++) {
+    board[y][xSearch] = player.cssClass;
+    changes.push([y,xSearch]);
+    xSearch--;
+  }
+  return changes;
+}
+
+var commitCD = function(y,x,player,lenCD) {
+  var ySearch = y + 1;
+  var changes = [];
+  for (var i = 0; i < lenCD; i++) {
+    board[ySearch][x] = player.cssClass;
+    changes.push([ySearch,x]);
+    ySearch++;
+  }
+  return changes;
+}
+
+var commitCU = function(y,x,player,lenCU) {
+  var ySearch = y - 1;
+  var changes = [];
+  for (var i = 0; i < lenCU; i++) {
+    board[ySearch][x] = player.cssClass;
+    changes.push([ySearch,x]);
+    ySearch--;
+  }
+  return changes;
+}
+
 
 // Replace values in model
 var commitValidMove = function(reg,y,x,player) {
+  var changes = [];
   if (reg.test(getDiagonalDownRL(y,x))) {
-    var newDDRL = printNewString(reg, getDiagonalDownRL(y,x), player);
+    var lenDDRL = matchLength(reg, getDiagonalDownRL(y,x));
+    var newDDRL = commitDDRL(y,x,player,lenDDRL);
+    changes.push(newDDRL);
   }
   if (reg.test(getDiagonalDownLR(y,x))) {
-    var newDDLR = printNewString(reg, getDiagonalDownLR(y,x), player);
+    var lenDDLR = matchLength(reg, getDiagonalDownLR(y,x));
+    var newDDLR = commitDDLR(y,x,player,lenDDLR);
+    changes.push(newDDLR);
   }
   if (reg.test(getDiagonalUpLR(y,x))) {
-    var newDULR = printNewString(reg, getDiagonalUpLR(y,x), player);
+    var lenDULR = matchLength(reg, getDiagonalUpLR(y,x));
+    var newDULR = commitDULR(y,x,player,lenDULR);
+    changes.push(newDULR);
   }
   if (reg.test(getDiagonalUpRL(y,x))) {
-    var newDURL = printNewString(reg, getDiagonalUpRL(y,x), player); 
+    var lenDURL = matchLength(reg, getDiagonalUpRL(y,x));
+    var newDURL = commitDURL(y,x,player,lenDURL);
+    changes.push(newDURL);
   }
   if (reg.test(getRightRow(y,x))) {
-    var newRR = printNewString(reg, getRightRow(y,x), player);
+    var lenRR = matchLength(reg, getRightRow(y,x));
+    var newRR = commitRR(y,x,player,lenRR);
+    changes.push(newRR);
   }
   if (reg.test(getLeftRow(y,x))) {
-    var newLR = printNewString(reg, getLeftRow(y,x), player);
+    var lenLR = matchLength(reg, getLeftRow(y,x));
+    var newLR = commitLR(y,x,player,lenLR);
+    changes.push(newLR);
   }
   if (reg.test(getColumnDown(y,x))) {
-    var newCD = printNewString(reg, getColumnDown(y,x), player);
+    var lenCD = matchLength(reg, getColumnDown(y,x));
+    var newCD = commitCD(y,x,player,lenCD);
+    changes.push(newCD);
   }
   if (reg.test(getColumnUp(y,x))) {
-    var newCU = printNewString(reg, getColumnUp(y,x), player);
+    var lenCU = matchLength(reg, getColumnUp(y,x));
+    var newCU = commitCU(y,x,player,lenCU);
+    changes.push(newCU);
   }
+  console.log(changes);
 }
 
 $gameEl.children().click(function(event) {
@@ -235,6 +343,8 @@ $gameEl.children().click(function(event) {
   } else {
     console.log("That move is not allowed");
   }
+  printTheBoard();
+  console.log(nextPlayerString());
 })
 
 
