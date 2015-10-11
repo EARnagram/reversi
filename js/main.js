@@ -196,35 +196,27 @@ var printNewString = function(reg, str, player) {
 var commitValidMove = function(reg,y,x,player) {
   if (reg.test(getDiagonalDownRL(y,x))) {
     var newDDRL = printNewString(reg, getDiagonalDownRL(y,x), player);
-    console.log(newDDRL);
   }
   if (reg.test(getDiagonalDownLR(y,x))) {
     var newDDLR = printNewString(reg, getDiagonalDownLR(y,x), player);
-    console.log(newDDLR);
   }
   if (reg.test(getDiagonalUpLR(y,x))) {
     var newDULR = printNewString(reg, getDiagonalUpLR(y,x), player);
-    console.log(newDULR);
   }
   if (reg.test(getDiagonalUpRL(y,x))) {
-    var newDURL = printNewString(reg, getDiagonalUpRL(y,x), player);
-    console.log(newDURL);
+    var newDURL = printNewString(reg, getDiagonalUpRL(y,x), player); 
   }
   if (reg.test(getRightRow(y,x))) {
     var newRR = printNewString(reg, getRightRow(y,x), player);
-    console.log(newRR);
   }
   if (reg.test(getLeftRow(y,x))) {
     var newLR = printNewString(reg, getLeftRow(y,x), player);
-    console.log(newLR);
   }
   if (reg.test(getColumnDown(y,x))) {
     var newCD = printNewString(reg, getColumnDown(y,x), player);
-    console.log(newCD);
   }
   if (reg.test(getColumnUp(y,x))) {
     var newCU = printNewString(reg, getColumnUp(y,x), player);
-    console.log(newCU);
   }
 }
 
