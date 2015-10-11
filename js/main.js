@@ -325,8 +325,57 @@ var commitValidMove = function(reg,y,x,player) {
     var newCU = commitCU(y,x,player,lenCU);
     changes.push(newCU);
   }
-  console.log(changes);
+  //console.log(changes);
 }
+
+
+
+// Clear board
+var clearTheBoard = function() {
+  for (var i = 0; i < 8; i++) {
+    for (var j = 0; j < 8; j++) {
+      board[i][j] = null;
+    }
+  }
+  board[3][4] = "X";
+  board[4][3] = "X";
+  board[3][3] = "O";
+  board[4][4] = "O";
+  currentTurn === playerX         // reset to playerX
+  return true;
+};
+
+var render = function() {
+  for (var i = 0; i < 64; i++) {
+    for (var j = 0; j < 8; j++) {
+      $(document.getElementById(i + ',' + j)).attr('value', function() {
+        return board[i][j];
+      });
+    };
+  }
+  $('.cells').each(function(index, element) {
+    if ($(element).attr('value') === "X") {
+      if ($(element).hasClass("O")) $(element).removeClass("O");
+      $(element).addClass("X");
+    }
+    if ($(element).attr('value') === "O") {
+      if ($(element).hasClass("X")) $(element).removeClass("X");
+      $(element).addClass("O");
+    }
+  });
+};
+
+// clear Cells to restart game
+var clearCells = function() {
+  var cells = document.getElementsByClassName("cells");
+  for (var i = 0; i < 64; i++) {
+    cells[i].textContent = "";
+  }
+  clearTheBoard(); // model
+  render();
+  return true;
+};
+
 
 $gameEl.children().click(function(event) {
   var $elIdArr = event.target.id.split(',');
@@ -345,31 +394,5 @@ $gameEl.children().click(function(event) {
   }
   printTheBoard();
   console.log(nextPlayerString());
-})
-
-
-// Clear board
-var clearTheBoard = function() {
-  for (var i = 0; i < 8; i++) {
-    for (var j = 0; j < 8; j++) {
-      board[i][j] = null;
-    }
-  }
-  board[3][4] = "X";
-  board[4][3] = "X";
-  board[3][3] = "O";
-  board[4][4] = "O";
-  currentTurn === playerX         // reset to playerX
-  return true;
-};
-
-// clear Cells to restart game
-var clearCells = function() {
-  var cells = document.getElementsByClassName("cells");
-  for (var i = 0; i < squares.length; i++) {
-    cells[i].textContent = "";
-
-  }
-  clearTheBoard(); // model
-  return true;
-};
+  render();
+});
