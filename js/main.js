@@ -167,47 +167,78 @@ var getDiagonalDownRL = function(y,x) {
 var validXReg = /\bO+X/g;
 var validOReg = /\bX+O/g;
 
-var validXMove = function(y,x){
+var checkValidMove = function(reg,y,x){
   var valid = [
-               validXReg.test(getDiagonalDownRL(y,x)),
-               validXReg.test(getDiagonalDownLR(y,x)),
-               validXReg.test(getDiagonalUpLR(y,x)),
-               validXReg.test(getDiagonalUpRL(y,x)),
-               validXReg.test(getRightRow(y,x)),
-               validXReg.test(getLeftRow(y,x)),
-               validXReg.test(getColumnDown(y,x)),
-               validXReg.test(getColumnUp(y,x))
+               reg.test(getDiagonalDownRL(y,x)),
+               reg.test(getDiagonalDownLR(y,x)),
+               reg.test(getDiagonalUpLR(y,x)),
+               reg.test(getDiagonalUpRL(y,x)),
+               reg.test(getRightRow(y,x)),
+               reg.test(getLeftRow(y,x)),
+               reg.test(getColumnDown(y,x)),
+               reg.test(getColumnUp(y,x))
               ];
   return valid.some(function(regTest) {
     return regTest;
   });
 }
 
-var validOMove = function(y,x){
-  var valid = [
-               validOReg.test(getDiagonalDownRL(y,x)),
-               validOReg.test(getDiagonalDownLR(y,x)),
-               validOReg.test(getDiagonalUpLR(y,x)),
-               validOReg.test(getDiagonalUpRL(y,x)),
-               validOReg.test(getRightRow(y,x)),
-               validOReg.test(getLeftRow(y,x)),
-               validOReg.test(getColumnDown(y,x)),
-               validOReg.test(getColumnUp(y,x))
-              ];
-  return valid.some(function(regTest) {
-    return regTest;
-  });
+var printNewString = function(reg, str, player) {
+  var len = str.match(reg).join('').length;
+  var newString = '';
+  for (var i = 0; i < len; i++) {
+    newString += player.cssClass;
+  }
+  return newString;
+}
+
+// Replace values in model
+var commitValidMove = function(reg,y,x,player) {
+  if (reg.test(getDiagonalDownRL(y,x))) {
+    var newDDRL = printNewString(reg, getDiagonalDownRL(y,x), player);
+    console.log(newDDRL);
+  }
+  if (reg.test(getDiagonalDownLR(y,x))) {
+    var newDDLR = printNewString(reg, getDiagonalDownLR(y,x), player);
+    console.log(newDDLR);
+  }
+  if (reg.test(getDiagonalUpLR(y,x))) {
+    var newDULR = printNewString(reg, getDiagonalUpLR(y,x), player);
+    console.log(newDULR);
+  }
+  if (reg.test(getDiagonalUpRL(y,x))) {
+    var newDURL = printNewString(reg, getDiagonalUpRL(y,x), player);
+    console.log(newDURL);
+  }
+  if (reg.test(getRightRow(y,x))) {
+    var newRR = printNewString(reg, getRightRow(y,x), player);
+    console.log(newRR);
+  }
+  if (reg.test(getLeftRow(y,x))) {
+    var newLR = printNewString(reg, getLeftRow(y,x), player);
+    console.log(newLR);
+  }
+  if (reg.test(getColumnDown(y,x))) {
+    var newCD = printNewString(reg, getColumnDown(y,x), player);
+    console.log(newCD);
+  }
+  if (reg.test(getColumnUp(y,x))) {
+    var newCU = printNewString(reg, getColumnUp(y,x), player);
+    console.log(newCU);
+  }
 }
 
 $gameEl.children().click(function(event) {
   var $elIdArr = event.target.id.split(',');
   var y = parseInt($elIdArr[0]);
   var x = parseInt($elIdArr[1]);
-  if (currentTurn === playerO && validOMove(y,x)) {
+  if (currentTurn === playerO && checkValidMove(validOReg,y,x)) {
     board[y][x] = "O";
+    commitValidMove(validOReg,y,x,currentTurn)
     currentTurn = playerX;
-  } else if (currentTurn === playerX && validXMove(y,x)) {
+  } else if (currentTurn === playerX && checkValidMove(validXReg,y,x)) {
     board[y][x] = "X";
+    commitValidMove(validXReg,y,x,currentTurn)
     currentTurn = playerO;
   } else {
     console.log("That move is not allowed");
@@ -220,13 +251,13 @@ var clearTheBoard = function() {
   for (var i = 0; i < 8; i++) {
     for (var j = 0; j < 8; j++) {
       board[i][j] = null;
-      board[3][4] = "X";
-      board[4][3] = "X";
-      board[3][3] = "O";
-      board[4][4] = "O";
     }
   }
-  //currentTurn === playerX// reset to playerX
+  board[3][4] = "X";
+  board[4][3] = "X";
+  board[3][3] = "O";
+  board[4][4] = "O";
+  currentTurn === playerX         // reset to playerX
   return true;
 };
 
