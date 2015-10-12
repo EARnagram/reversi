@@ -361,6 +361,12 @@ var commitValidMove = function(reg,y,x,player) {
   //console.log(changes);
 }
 
+// function to update play counters
+var defineLengths = function() {
+  $xCellsNum = $('.X').length;
+  $oCellsNum = $('.O').length;
+  $playedCellsNum = $('.played').length;
+}
 
 // Render model to DOM
 var render = function() {
@@ -381,14 +387,9 @@ var render = function() {
       $(element).addClass("O played");
     }
   });
+  defineLengths();  // update counters
 };
 
-// function to update play counters
-var defineLengths = function() {
-  $xCellsNum = $('.X').length;
-  $oCellsNum = $('.O').length;
-  $playedCellsNum = $('.played').length;
-}
 
 // Clear board
 var clearTheBoard = function() {
@@ -414,19 +415,18 @@ var clearCells = function() {
   });
   clearTheBoard(); // model
   render();
-  defineLengths();
   gameIsBeingPlayed = true;
   return true;
 };
 
-// Hover that tells who's turn and legal move
+// Hover that tells who's turn and whether move is legal
 // var legalHover = function() {
 //     $( '.cells' ).hover(
 //     function() {
 //       if (currentTurn === playerO) {
-//         if ($( this ).attr('value') === '_') $(this).css('background-color', '#fff');
+//         if (!$( this ).attr('value')) $(this).css('background-color', '#fff');
 //       } else {
-//         if ($( this ).attr('value') === '_') $(this).css('background-color', '#000');
+//         if (!$( this ).attr('value')) $(this).css('background-color', '#000');
 //       }
 //     }, function() {
 //       $( this ).not(".played").css( "background-color",'#1425CB' );
@@ -464,5 +464,7 @@ $gameEl.children().click(function(event) {
   printTheBoard();
   console.log(nextPlayerString());
   render();
-  defineLengths();
 });
+
+// Starts Game
+clearCells();
