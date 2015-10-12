@@ -196,12 +196,25 @@ var checkValidMove = function(reg,y,x){
   });
 }
 
-var validMoveAvail = function(reg) {
-  for (var i = 0; i < 8; i++) {
-    for (var j = 0; j < 8; j++) {
-
+var anyValidMove = function(reg) {
+  for (var y = 0; y < 8; y++) {
+    for (var x = 0; x < 8; x++) {
+      var valid = [
+                   reg.test(getDiagonalDownRL(y,x)),
+                   reg.test(getDiagonalDownLR(y,x)),
+                   reg.test(getDiagonalUpLR(y,x)),
+                   reg.test(getDiagonalUpRL(y,x)),
+                   reg.test(getRightRow(y,x)),
+                   reg.test(getLeftRow(y,x)),
+                   reg.test(getColumnDown(y,x)),
+                   reg.test(getColumnUp(y,x))
+                  ];
+      for (var i = 0; i < valid.length; i++) {
+        if (valid[i] === true) return true;
+      }
     }
-  }
+  };
+  return false;
 }
 
 // Find length of legal move
@@ -314,7 +327,6 @@ var commitCU = function(y,x,player,lenCU) {
   return changes;
 }
 
-
 // Replace values in model
 var commitValidMove = function(reg,y,x,player) {
   var changes = [];
@@ -366,6 +378,8 @@ var defineLengths = function() {
   $xCellsNum = $('.X').length;
   $oCellsNum = $('.O').length;
   $playedCellsNum = $('.played').length;
+  $('#oscore').html($oCellsNum);
+  $('#xscore').html($xCellsNum);
 }
 
 // Render model to DOM
@@ -437,9 +451,25 @@ var clearCells = function() {
 // Win Logic
 var getWinner = function() {
   if ($playedCellsNum === 64) {
-    if ($xCellsNum < $oCellsNum)   return "Player O Wins!";
-    if ($xCellsNum > $oCellsNum)   return "Player X Wins!";
-    if ($xCellsNum === $oCellsNum) return "It's a tie!";
+    if ($xCellsNum < $oCellsNum) {
+      return "O";
+    } else if ($xCellsNum > $oCellsNum) {
+      return "X";
+    } else if ($xCellsNum === $oCellsNum) {
+      return "Tie";
+    }
+    setTimeout(clearCells, 4000);
+  } else if (anyValidMove(validOReg) === false && anyValidMove(validXReg) === false) {
+    if ($xCellsNum < $oCellsNum) {
+      return "O";
+    } else if ($xCellsNum > $oCellsNum) {
+      return "X";
+    } else if ($xCellsNum === $oCellsNum) {
+      return "Tie";
+    }
+    setTimeout(clearCells, 4000);
+  } else {
+    console.log("move/s available/s");
   }
 }
 
@@ -453,11 +483,22 @@ $gameEl.children().click(function(event) {
   } else if (currentTurn === playerO && checkValidMove(validOReg,y,x)) {
     board[y][x] = "O";
     commitValidMove(validOReg,y,x,currentTurn)
-    currentTurn = playerX;
+    if (currentTurn === playerX && anyValidMove(validXReg) === false) {
+        currentTurn = playerX;
+        getWinner();
+    } else {
+      currentTurn = playerX;
+    } 
+    
   } else if (currentTurn === playerX && checkValidMove(validXReg,y,x)) {
     board[y][x] = "X";
-    commitValidMove(validXReg,y,x,currentTurn)
-    currentTurn = playerO;
+    commitValidMove(validXReg,y,x,currentTurn);
+    if (currentTurn === playerX && anyValidMove(validXReg) === false) {
+        currentTurn = playerO;
+        getWinner();
+    } else {
+        currentTurn = playerO;
+    }
   } else {
     console.log("Illegal move.");
   }

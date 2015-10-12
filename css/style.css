@@ -1,34 +1,47 @@
+@import url(https://fonts.googleapis.com/css?family=Quicksand:300);
+
 * {
-      box-sizing:  border-box;
-      margin: 0;
-      padding: 0;
-      text-align: center;
-      height: 100%;
-      width: 100%;
-      font-size: 8px;
-    }
+  box-sizing:  border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
-    padding: 0;
-    margin: 0;
     background-color: pink;
     text-align: center;
     height: 100%;
     width:100%;
 }
 
+h1 {
+  margin-top: 35px;
+  font-family: Quicksand;
+  text-weight: 900;
+  text-shadow: 200px 35px 0px white, 
+               -200px -35px 0px white, 
+               200px -35px 0px black,  
+               -200px 35px 0px black, 
+               1px 1px 1px black, 
+               2.5px 2.5px 9px white;
+  color: gray;
+  font-size: 4rem;
+}
+
 #game {
   display: inline-block;
   margin: 0 auto;
-  margin-top: 30px;
+  margin-top: 42px;
   height: 500px;
   width: 500px;
   padding: 10px 10px 10px 10px;
+  background: dodgerblue;
+  border-radius: 10px;
+  box-shadow: 3px 3px 7px -2px #333333;
 }
 
 .cells {
-  height: 53px;
-  width: 53px;
+  height: 52px;
+  width: 52px;
   margin: 2px 2px 2px 2px;
   background-color: #858585;
   display: inline-block;
@@ -47,4 +60,34 @@ body {
 
 .X {
   background-color: #464646;
+}
+
+.dark {
+  float: left;
+  margin: 185px 0px 0px 100px;
+  height: 11rem;
+  border-radius: 10px;
+  width: 14%;
+  background-color: #464646;
+  font-size: 7rem;
+  font-family: Quicksand;
+}
+
+.light {
+  float: right;
+  margin: 185px 100px 0px 0px;
+  height: 11rem;
+  border-radius: 10px;
+  width: 14%;
+  background-color: #EBEBEB;
+  font-size: 7rem;
+  font-family: Quicksand;
+  text-shadow: 1px 1px 0px white;
+}
+
+h3 {
+  display: inline-block;
+  margin: 0 auto;
+  padding-top: .14rem;
+  padding-left: .07rem;
 }
