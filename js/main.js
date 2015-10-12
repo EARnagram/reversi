@@ -471,6 +471,7 @@ var getWinner = function() {
   } else {
     console.log("move/s available/s");
   }
+  return false;
 }
 
 // Click event
@@ -482,22 +483,18 @@ $gameEl.children().click(function(event) {
     console.log("That move is not allowed - cell already played");
   } else if (currentTurn === playerO && checkValidMove(validOReg,y,x)) {
     board[y][x] = "O";
-    commitValidMove(validOReg,y,x,currentTurn)
-    if (currentTurn === playerX && anyValidMove(validXReg) === false) {
-        currentTurn = playerX;
+    commitValidMove(validOReg,y,x,currentTurn);
+    currentTurn = playerX;
+    if (anyValidMove(validXReg) === false) {
         getWinner();
-    } else {
-      currentTurn = playerX;
     } 
-    
   } else if (currentTurn === playerX && checkValidMove(validXReg,y,x)) {
     board[y][x] = "X";
     commitValidMove(validXReg,y,x,currentTurn);
-    if (currentTurn === playerX && anyValidMove(validXReg) === false) {
-        currentTurn = playerO;
-        getWinner();
-    } else {
-        currentTurn = playerO;
+    currentTurn = playerO
+    if (anyValidMove(validOReg) === false) {
+      currentTurn = playerX;
+      getWinner();
     }
   } else {
     console.log("Illegal move.");
