@@ -18,11 +18,11 @@ var piece = function(cssClass) {
 }
 
 // Number of cells taken by each player
-var $xCellsNum = $('cells').hasClass('X').length;
-var $oCellsNum = $('cells').hasClass('O').length;
+var $xCellsNum;
+var $oCellsNum;
 
 // Number of cells played
-var $oCellsNum = $('cells').hasClass('played').length;
+var $playedCellsNum;
 
 // Create Players
 var playerX = new piece("X");
@@ -196,6 +196,14 @@ var checkValidMove = function(reg,y,x){
   });
 }
 
+var validMoveAvail = function(reg) {
+  for (var i = 0; i < 8; i++) {
+    for (var j = 0; j < 8; j++) {
+
+    }
+  }
+}
+
 // Find length of legal move
 var matchLength = function(reg, str) {
   var len = str.match(reg).join('').length;
@@ -356,7 +364,7 @@ var commitValidMove = function(reg,y,x,player) {
 
 // Render model to DOM
 var render = function() {
-  for (var i = 0; i < 64; i++) {
+  for (var i = 0; i < 8; i++) {
     for (var j = 0; j < 8; j++) {
       $(document.getElementById(i + ',' + j)).attr('value', function() {
         return board[i][j];
@@ -374,6 +382,13 @@ var render = function() {
     }
   });
 };
+
+// function to update play counters
+var defineLengths = function() {
+  $xCellsNum = $('.X').length;
+  $oCellsNum = $('.O').length;
+  $playedCellsNum = $('.played').length;
+}
 
 // Clear board
 var clearTheBoard = function() {
@@ -399,6 +414,7 @@ var clearCells = function() {
   });
   clearTheBoard(); // model
   render();
+  defineLengths();
   gameIsBeingPlayed = true;
   return true;
 };
@@ -420,7 +436,7 @@ var clearCells = function() {
 
 // Win Logic
 var getWinner = function() {
-  if ($xCellsNum + $oCellsNum === 64) {
+  if ($playedCellsNum === 64) {
     if ($xCellsNum < $oCellsNum)   return "Player O Wins!";
     if ($xCellsNum > $oCellsNum)   return "Player X Wins!";
     if ($xCellsNum === $oCellsNum) return "It's a tie!";
@@ -432,7 +448,6 @@ $gameEl.children().click(function(event) {
   var $elIdArr = event.target.id.split(',');
   var y = parseInt($elIdArr[0]);
   var x = parseInt($elIdArr[1]);
-  console.log($(event.target).attr('class'));
   if ($(event.target).hasClass('played')) {
     console.log("That move is not allowed - cell already played");
   } else if (currentTurn === playerO && checkValidMove(validOReg,y,x)) {
@@ -444,9 +459,10 @@ $gameEl.children().click(function(event) {
     commitValidMove(validXReg,y,x,currentTurn)
     currentTurn = playerO;
   } else {
-    console.log("That move is not allowed");
+    console.log("Illegal move.");
   }
   printTheBoard();
   console.log(nextPlayerString());
   render();
+  defineLengths();
 });
