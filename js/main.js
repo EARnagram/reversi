@@ -1,9 +1,9 @@
-//  ____                         _ 
+//  ____                         _
 // |  _ \ _____   _____ _ __ ___(_)
 // | |_) / _ \ \ / / _ \ '__/ __| |
 // |  _ <  __/\ V /  __/ |  \__ \ |
 // |_| \_\___| \_/ \___|_|  |___/_|
-                                
+
 
 // game element is stored as a variable
 var $gameEl = $("#game");
@@ -196,25 +196,16 @@ var checkValidMove = function(reg,y,x){
   });
 }
 
-var anyValidMove = function(reg) {
+var anyValidMove = function(reg,player) {
+  var count = 0;
   for (var y = 0; y < 8; y++) {
     for (var x = 0; x < 8; x++) {
-      var valid = [
-                   reg.test(getDiagonalDownRL(y,x)),
-                   reg.test(getDiagonalDownLR(y,x)),
-                   reg.test(getDiagonalUpLR(y,x)),
-                   reg.test(getDiagonalUpRL(y,x)),
-                   reg.test(getRightRow(y,x)),
-                   reg.test(getLeftRow(y,x)),
-                   reg.test(getColumnDown(y,x)),
-                   reg.test(getColumnUp(y,x))
-                  ];
-      for (var i = 0; i < valid.length; i++) {
-        if (valid[i] === true) return true;
+      if (board[y][x] === null) {
+        if (checkValidMove(reg,y,x) === true) count++;
       }
     }
   };
-  return false;
+  return count > 0;
 }
 
 // Find length of legal move
@@ -392,6 +383,7 @@ var render = function() {
     };
   }
   $('.cells').each(function(index, element) {
+    $(element).removeClass('XHighlight OHighlight');
     if ($(element).attr('value') === "X") {
       if ($(element).hasClass("O")) $(element).removeClass("O");
       $(element).addClass("X played");
@@ -416,7 +408,7 @@ var clearTheBoard = function() {
   board[4][3] = "X";
   board[3][3] = "O";
   board[4][4] = "O";
-  currentTurn === playerX         // reset to playerX
+  currentTurn = playerX;         // reset to playerX
   return true;
 };
 
@@ -434,42 +426,45 @@ var clearCells = function() {
 };
 
 // Hover that tells who's turn and whether move is legal
-// var legalHover = function() {
-//     $( '.cells' ).hover(
-//     function() {
-//       if (currentTurn === playerO) {
-//         if (!$( this ).attr('value')) $(this).css('background-color', '#fff');
-//       } else {
-//         if (!$( this ).attr('value')) $(this).css('background-color', '#000');
-//       }
-//     }, function() {
-//       $( this ).not(".played").css( "background-color",'#1425CB' );
-//     });
-//   }
-// }
+var legalHover = function() {
+  $( '.cells' ).hover(
+    function() {
+      if (currentTurn === playerO && !$(this).hasClass('played')) {
+        $(this).addClass("OHighlight");
+      } else if (currentTurn === playerX && !$(this).hasClass('played')){
+        $(this).addClass("XHighlight");
+      }
+    }, function() {
+      if (currentTurn === playerO && !$(this).hasClass('played') && $(this).hasClass("OHighlight")) {
+        $(this).removeClass("OHighlight");
+      } else if (currentTurn === playerX && !$(this).hasClass('played') && $(this).hasClass("XHighlight")){
+        $(this).removeClass("XHighlight");
+      }
+    });
+}
 
 // Win Logic
 var getWinner = function() {
   if ($playedCellsNum === 64) {
     if ($xCellsNum < $oCellsNum) {
-      return "O";
+      alert("O Wins!");
     } else if ($xCellsNum > $oCellsNum) {
-      return "X";
+      alert("X Wins!");
     } else if ($xCellsNum === $oCellsNum) {
-      return "Tie";
+      alert("Tie!");
     }
     setTimeout(clearCells, 4000);
-  } else if (anyValidMove(validOReg) === false && anyValidMove(validXReg) === false) {
+  } else if (anyValidMove(validOReg,playerO) === false && anyValidMove(validXReg,playerX) === false) {
     if ($xCellsNum < $oCellsNum) {
-      return "O";
+      alert("O Wins!");
     } else if ($xCellsNum > $oCellsNum) {
-      return "X";
+      alert("X Wins!");
     } else if ($xCellsNum === $oCellsNum) {
-      return "Tie";
+      alert("Tie!");
     }
     setTimeout(clearCells, 4000);
   } else {
-    console.log("move/s available/s");
+    console.log("moves available");
   }
   return false;
 }
@@ -480,29 +475,44 @@ $gameEl.children().click(function(event) {
   var y = parseInt($elIdArr[0]);
   var x = parseInt($elIdArr[1]);
   if ($(event.target).hasClass('played')) {
-    console.log("That move is not allowed - cell already played");
+      console.log("That move is not allowed - cell already played");
   } else if (currentTurn === playerO && checkValidMove(validOReg,y,x)) {
-    board[y][x] = "O";
-    commitValidMove(validOReg,y,x,currentTurn);
-    currentTurn = playerX;
-    if (anyValidMove(validXReg) === false) {
+      board[y][x] = "O";
+
+      commitValidMove(validOReg,y,x,currentTurn);
+
+      if (anyValidMove(validXReg, playerX) === true) {
+          currentTurn = playerX;
+      } else if(anyValidMove(validOReg, playerO) === true) {
+          console.log("Player X cannot play!");
+          currentTurn = playerO;
+      } else {
         getWinner();
-    } 
+      }
+
   } else if (currentTurn === playerX && checkValidMove(validXReg,y,x)) {
-    board[y][x] = "X";
-    commitValidMove(validXReg,y,x,currentTurn);
-    currentTurn = playerO
-    if (anyValidMove(validOReg) === false) {
-      currentTurn = playerX;
-      getWinner();
-    }
+      board[y][x] = "X";
+
+      commitValidMove(validXReg,y,x,currentTurn);
+
+      if (anyValidMove(validOReg, playerO) === true) {
+          currentTurn = playerO;
+      } else if(anyValidMove(validXReg, playerX) === true) {
+          console.log("Player O cannot play!");
+          currentTurn = playerX;
+      } else {
+        getWinner();
+      }
+
   } else {
-    console.log("Illegal move.");
+      console.log("Illegal move.");
   }
   printTheBoard();
   console.log(nextPlayerString());
   render();
+  legalHover();
 });
 
 // Starts Game
 clearCells();
+legalHover();
