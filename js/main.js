@@ -5,9 +5,6 @@
 // |_| \_\___| \_/ \___|_|  |___/_|
 
 
-// game element is stored as a variable
-var $gameEl = $("#game");
-
 // Player constructor function
 function player (name) {
   this.count = 2;
@@ -19,11 +16,11 @@ var playerX = new player("X");
 var playerO = new player("O");
 
 // Current Turn varaible
-var currentTurn = playerX;       // playerO
+var current = playerX;       // playerO
 
 function switchPlayer(force = false) {
-  if (force) console.log(`Player ${currentTurn.name} cannot play!`);
-  currentTurn === playerX ? currentTurn = playerO : currentTurn = playerX;
+  if (force) console.log(`Player ${current.name} cannot play!`);
+  current === playerX ? current = playerO : current = playerX;
 }
 
 // Board model
@@ -53,7 +50,7 @@ var clearTheBoard = function() {
   board[4][3] = "X";
   board[3][3] = "O";
   board[4][4] = "O";
-  currentTurn = playerX;         // reset to playerX
+  current = playerX;         // reset to playerX
   return true;
 };
 
@@ -96,9 +93,9 @@ function collectDirections(y, x) {
 }
 
 function validMove(ob) {
-  let reg = currentTurn === playerX ? validXReg : validOReg;
+  let reg = current === playerX ? validXReg : validOReg;
   return Object.keys(ob).reduce((acc, cur) => {
-    if (reg.test(ob[cur])) acc.push(cur);
+    if (reg.test(ob[cur])) acc.push([cur, ob[cur]]);
     return acc;
   }, []);
 }
@@ -110,7 +107,7 @@ function anyValidMove(check = true) {
     for (var k = 0; k < board[i].length; k++) {
       if (board[i][k] === null) {
         if (validMove(collectDirections(i,k)).length > 0) {
-          move = true, check = false;
+          [move, check] = [true, false];
           break;
         }
       }
@@ -120,8 +117,46 @@ function anyValidMove(check = true) {
   return check ? anyValidMove(false) : move;
 }
 
-
-
+function commitMove(y, x, dirs = validMove(collectDirections(y, x))) {
+  dirs.forEach(dir => {
+    let len = (dir[1].match(current.name === "X" ? /O/ : /X/) || []).length;
+    for (var i = 0; i < len; i++) {
+      switch (dir[0]) {
+        case "n":
+          y -= 1;
+          break;
+        case "ne":
+          y -= 1;
+          x -= 1;
+          break;
+        case "e":
+          x -= 1;
+          break;
+        case "se":
+          x -= 1;
+          y += 1;
+          break;
+        case "s":
+          y += 1;
+          break;
+        case "sw":
+          y += 1;
+          x += 1;
+          break;
+        case "w":
+          x += 1;
+          break;
+        case "nw":
+          y -= 1;
+          x += 1;
+          break;
+        default:
+          console.error("There's a problem…");
+      }
+      board[y][x] = current.name;
+    }
+  })
+}
 
 clearTheBoard();
 printTheBoard();
