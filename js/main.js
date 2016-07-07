@@ -8,28 +8,23 @@
 // game element is stored as a variable
 var $gameEl = $("#game");
 
-// Set to true when game starts
-var gameIsBeingPlayed = false;
-
-// Piece constructor function
-var piece = function(name) {
+// Player constructor function
+function player (name) {
   this.count = 2;
   this.name = name;
 }
 
-// Number of cells taken by each player
-var $xCellsNum;
-var $oCellsNum;
-
-// Number of cells played
-var $playedCellsNum;
-
 // Create Players
-var playerX = new piece("X");
-var playerO = new piece("O");
+var playerX = new player("X");
+var playerO = new player("O");
 
 // Current Turn varaible
 var currentTurn = playerX;       // playerO
+
+function switchPlayer(force = false) {
+  if (force) console.log(`Player ${currentTurn.name} cannot play!`);
+  currentTurn === playerX ? currentTurn = playerO : currentTurn = playerX;
+}
 
 // Board model
 var board = [
@@ -93,17 +88,40 @@ function searchBoard(y, x, dir, str = '') {
 }
 
 function collectDirections(y, x) {
-  let obj = {n: '', ne: '', e: '', se: '', s: '', sw: '', w: '', nw: ''};
-  Object.keys(obj).forEach(key => {
-    obj[key] = searchBoard(y,x,key);
+  let ob = {n: '', ne: '', e: '', se: '', s: '', sw: '', w: '', nw: ''};
+  Object.keys(ob).forEach(key => {
+    ob[key] = searchBoard(y,x,key);
   })
-  return obj;
+  return ob;
 }
 
-function switchPlayer() {
-  currentTurn === playerX ? currentTurn = playerO
-                          : currentTurn = playerX;
+function validMove(ob) {
+  let reg = currentTurn === playerX ? validXReg : validOReg;
+  return Object.keys(ob).reduce((acc, cur) => {
+    if (reg.test(ob[cur])) acc.push(cur);
+    return acc;
+  }, []);
 }
+
+function anyValidMove(check = true) {
+  let move = false;
+  if (!check) switchPlayer(true);
+  for (var i = 0; i < board.length; i++) {
+    for (var k = 0; k < board[i].length; k++) {
+      if (board[i][k] === null) {
+        if (validMove(collectDirections(i,k)).length > 0) {
+          move = true, check = false;
+          break;
+        }
+      }
+    }
+    if (move) break;
+  }
+  return check ? anyValidMove(false) : move;
+}
+
+
+
 
 clearTheBoard();
 printTheBoard();

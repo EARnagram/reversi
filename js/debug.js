@@ -28,3 +28,19 @@ var printTheBoard = function(){
   }
   return true;
 };
+
+function setTheBoardForPlayer(player) {
+  board[3][4] = null;
+  board[4][3] = null;
+  board[3][3] = null;
+  board[4][4] = null;
+  board[0][0] = player;
+  board[0][1] = player;
+  board[0][2] = player;
+  board[2][2] = player;
+  board[2][1] = player;
+  board[2][0] = player;
+  board[1][0] = player;
+  board[1][2] = player;
+  board[1][1] = player === "X" ? "O" : "X";
+}
