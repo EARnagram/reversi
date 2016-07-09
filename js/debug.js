@@ -26,6 +26,7 @@ var printTheBoard = function(){
       getValueOf(i, 7)
     );
   }
+  currentTurn();
   return true;
 };
 
@@ -34,7 +35,6 @@ function setTheBoardForPlayer(player) {
   board[4][3] = null;
   board[3][3] = null;
   board[4][4] = null;
-  board[0][0] = player;
   board[0][1] = player;
   board[0][2] = player;
   board[2][2] = player;
@@ -43,4 +43,8 @@ function setTheBoardForPlayer(player) {
   board[1][0] = player;
   board[1][2] = player;
   board[1][1] = player === "X" ? "O" : "X";
+}
+
+function currentTurn() {
+  console.log(`Player ${current.name} is up!`);
 }

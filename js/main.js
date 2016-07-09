@@ -55,7 +55,7 @@ var clearTheBoard = function() {
 };
 
 function searchBoard(y, x, dir, str = '') {
-  if ((y < 7 && y > 0) && (x < 8 && x >= 0)) {
+  if ((y < 8 && y >= 0) && (x < 8 && x >= 0)) {
     if (dir === "n") {
       y -= 1;
     } else if (dir === "nw") {
@@ -77,10 +77,12 @@ function searchBoard(y, x, dir, str = '') {
       x += 1;
       y -= 1;
     }
-    str += board[y][x] || '_';
-    return searchBoard(y, x, dir, str);
-  } else {
-    return str;
+    if (y > 0 && x > 0 && y < 8 && x < 8) {
+      str += board[y][x] || '_';
+      return searchBoard(y, x, dir, str)
+    } else {
+      return str;
+    }
   }
 }
 
@@ -88,12 +90,13 @@ function collectDirections(y, x) {
   let ob = {n: '', ne: '', e: '', se: '', s: '', sw: '', w: '', nw: ''};
   Object.keys(ob).forEach(key => {
     ob[key] = searchBoard(y,x,key);
-  })
+  });
+  console.log(ob.se);
   return ob;
 }
 
-function validMove(ob) {
-  let reg = current === playerX ? validXReg : validOReg;
+function validMove(ob, player = current) {
+  let reg = player === playerX ? validXReg : validOReg;
   return Object.keys(ob).reduce((acc, cur) => {
     if (reg.test(ob[cur])) acc.push([cur, ob[cur]]);
     return acc;
@@ -101,15 +104,14 @@ function validMove(ob) {
 }
 
 function anyValidMove(check = true) {
+  let player = check ? current : (current === playerX ? playerO : playerX);
   let move = false;
-  if (!check) switchPlayer(true);
   for (var i = 0; i < board.length; i++) {
     for (var k = 0; k < board[i].length; k++) {
-      if (board[i][k] === null) {
-        if (validMove(collectDirections(i,k)).length > 0) {
-          [move, check] = [true, false];
-          break;
-        }
+      if (board[i][k] === null &&
+          validMove(collectDirections(i,k), player).length > 0) {
+        [move, check] = [true, false];
+        break;
       }
     }
     if (move) break;
@@ -118,44 +120,50 @@ function anyValidMove(check = true) {
 }
 
 function commitMove(y, x, dirs = validMove(collectDirections(y, x))) {
+  if (dirs.length < 1) return "You can't move there!";
+  board[y][x] = current.name;
   dirs.forEach(dir => {
+    let h = x, v = y;
     let len = (dir[1].match(current.name === "X" ? /O/ : /X/) || []).length;
     for (var i = 0; i < len; i++) {
       switch (dir[0]) {
         case "n":
-          y -= 1;
+          v -= 1;
           break;
         case "ne":
-          y -= 1;
-          x -= 1;
+          v -= 1;
+          h -= 1;
           break;
         case "e":
-          x -= 1;
+          h += 1;
           break;
         case "se":
-          x -= 1;
-          y += 1;
+          h += 1;
+          v += 1;
           break;
         case "s":
-          y += 1;
+          v += 1;
           break;
         case "sw":
-          y += 1;
-          x += 1;
+          v += 1;
+          h -= 1;
           break;
         case "w":
-          x += 1;
+          h -= 1;
           break;
         case "nw":
-          y -= 1;
-          x += 1;
+          v -= 1;
+          h -= 1;
           break;
         default:
           console.error("There's a problem…");
       }
-      board[y][x] = current.name;
+      board[v][h] = current.name;
     }
   })
+  if (!anyValidMove()) return "No moves remaining";
+  switchPlayer();
+  printTheBoard();
 }
 
 clearTheBoard();
