@@ -77,12 +77,12 @@ function newDirections(y, x, dir) {
     default:
       console.debug("There's a problem…");
   }
-  return [y, x, dir];
+  return [y, x];
 }
 
 // collect string for each direction
 function searchBoard(y, x, dir, str = '') {
-  [y, x, dir] = newDirections(y, x, dir);
+  [y, x] = newDirections(y, x, dir);
   if (y >= 0 && y < 8 &&  x >= 0 && x < 8) {
     str += board[y][x] || '_';
     return searchBoard(y, x, dir, str);
@@ -103,15 +103,15 @@ function collectDirections(y, x) {
 // compile directions with valid moves into array
 function validMove(ob, player = current) {
   var reg = player === playerX ? validXReg : validOReg;
-  return Object.keys(ob).reduce((acc, cur) => {
-    if (reg.test(ob[cur])) acc.push([cur, ob[cur]]);
+  return Object.keys(ob).reduce((acc, key) => {
+    if (reg.test(ob[key])) acc.push([key, ob[key]]);
     return acc;
   }, []);
 }
 
 // commit given space at y,x to current player
 function commitDirection(y, x, dir) {
-  [y, x, dir] = newDirections(y, x, dir);
+  [y, x] = newDirections(y, x, dir);
   if (board[y][x] !== current.name && board[y][x] !== null) {
     board[y][x] = current.name;
     return commitDirection(y, x, dir);
