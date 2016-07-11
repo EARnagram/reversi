@@ -31,18 +31,31 @@ var printTheBoard = function(){
 };
 
 function setTheBoardForPlayer(player) {
-  board[3][4] = null;
-  board[4][3] = null;
-  board[3][3] = null;
-  board[4][4] = null;
+  board[0][0] = player;
   board[0][1] = player;
   board[0][2] = player;
-  board[2][2] = player;
-  board[2][1] = player;
-  board[2][0] = player;
+  board[0][3] = player;
+  board[0][4] = player;
   board[1][0] = player;
-  board[1][2] = player;
+  board[1][4] = player;
+  board[2][0] = player;
+  board[2][4] = player;
+  board[3][0] = player;
+  board[3][4] = player;
+  board[4][0] = player;
+  board[4][1] = player;
+  board[4][2] = player;
+  board[4][3] = player;
+  board[4][4] = player;
   board[1][1] = player === "X" ? "O" : "X";
+  board[1][2] = player === "X" ? "O" : "X";
+  board[1][3] = player === "X" ? "O" : "X";
+  board[2][1] = player === "X" ? "O" : "X";
+  board[2][3] = player === "X" ? "O" : "X";
+  board[3][1] = player === "X" ? "O" : "X";
+  board[3][2] = player === "X" ? "O" : "X";
+  board[3][3] = player === "X" ? "O" : "X";
+  render();
 }
 
 function currentTurn() {
