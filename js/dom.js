@@ -11,8 +11,8 @@ function render() {
     arr.forEach((cell, x) => {
       if (board[y][x] === "X") $(`#c${y}_${x}`).removeClass('O').addClass('X');
       if (board[y][x] === "O") $(`#c${y}_${x}`).removeClass('X').addClass('O');
-    })
-  })
+    });
+  });
   $('#xscore').text(playerX.count);
   $('#oscore').text(playerO.count);
 }
