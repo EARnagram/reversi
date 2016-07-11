@@ -1,6 +1,6 @@
 #Reversi
 
-#### Here's the [link.](http://reversi.bitballoon.com/)
+#### Here's the new [link.](http://ezraez.github.io/reversi/)
 
 
 ### The game
