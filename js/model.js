@@ -164,7 +164,6 @@ function checkWinner() {
   } else {
     switchPlayer();
   }
-  printTheBoard();
 }
 
 function calcScores() {

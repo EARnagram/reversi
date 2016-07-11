@@ -24,7 +24,6 @@ $(function() {
     commitMove(parseInt(id[0]), parseInt(id[1]));
     render();
   });
-  printTheBoard();
   render();
 });
 
