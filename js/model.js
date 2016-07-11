@@ -104,8 +104,7 @@ function collectDirections(y, x) {
 function validMove(ob, player = current) {
   var reg = player === playerX ? validXReg : validOReg;
   return Object.keys(ob).reduce((acc, cur) => {
-    let reggy = reg;
-    if (reggy.test(ob[cur])) acc.push([cur, ob[cur]]);
+    if (reg.test(ob[cur])) acc.push([cur, ob[cur]]);
     return acc;
   }, []);
 }
