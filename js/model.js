@@ -149,9 +149,9 @@ function checkWinner() {
   calcScores();
   if (playerX.count + playerO.count === 64) {
     return playerX.count > playerO.count
-           ? "Player X Wins!"
-           : (playerX.count === playerO.count ? "Tie!"
-                                              : "Player O Wins!");
+         ? alert("Player X Wins!")
+         : (playerX.count === playerO.count ? alert("Tie!")
+                                            : alert("Player O Wins!"));
   } else if (!anyValidMove(notCurrent())) {
     console.warn(`Player ${notCurrent().name} couldn't move!`);
     if (!anyValidMove()){
