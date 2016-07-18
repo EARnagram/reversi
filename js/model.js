@@ -136,7 +136,7 @@ function anyValidMove(player = current) {
 }
 
 function commitMove(y, x, dirs = validMove(collectDirections(y, x))) {
-  if (dirs.length < 1 || !board[y,x]) {
+  if (dirs.length < 1 || board[y][x]) {
     console.log("No move!");
     return false;
   }
@@ -148,21 +148,20 @@ function commitMove(y, x, dirs = validMove(collectDirections(y, x))) {
 }
 
 function checkWinner() {
-  if (playerX.count + playerO.count === 64) {
-    console.info("All squares played!");
-    return endGame();
-  } else if (!anyValidMove(notCurrent())) {
+ if (!anyValidMove(notCurrent())) {
     console.warn(`Player ${notCurrent().name} cannot play!`);
     if (!anyValidMove()){
       console.info("No moves remaining!");
       return endGame();
     }
+    return current;
   } else {
     return switchPlayer();
   }
 }
 
 function endGame() {
+  calcScores();
   return playerX.count > playerO.count ? "X"
         : (playerX.count === playerO.count ? "T" : "O");
 }
