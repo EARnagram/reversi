@@ -50,10 +50,6 @@ h1 {
   box-shadow: 3px 3px 3px -2px #323232;
 }
 
-/*.cells:hover {
-  background-color: #CECDCD;
-}*/
-
 .OHighlight {
   background-color: rgba(235,235,235,0.8);
 }
@@ -70,27 +66,28 @@ h1 {
   background-color: rgba(27,27,27,1);
 }
 
-.dark {
-  float: left;
-  margin: 185px 0px 0px 100px;
-  height: 11rem;
+.scorecard {
+  height: 10%;
+  width: 10%;
   border-radius: 10px;
-  width: 14%;
-  background-color: #464646;
   font-size: 7rem;
   font-family: Quicksand;
+  color: gray;
+}
+
+.dark {
+  margin: 15% 0px 0px 15%;
+  float: left;
+  background-color: rgba(27,27,27,1);
+  text-shadow: 1.5px 1.5px 0px white;
 }
 
 .light {
+  background-color: rgba(235,235,235,1);
   float: right;
-  margin: 185px 100px 0px 0px;
-  height: 11rem;
-  border-radius: 10px;
-  width: 14%;
+  margin: 15% 15% 0px 0px;
   background-color: #EBEBEB;
-  font-size: 7rem;
-  font-family: Quicksand;
-  text-shadow: 1px 1px 0px white;
+  text-shadow: 2px 2px 0px black;
 }
 
 h3 {

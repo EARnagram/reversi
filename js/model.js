@@ -148,7 +148,6 @@ function commitMove(y, x, dirs = validMove(collectDirections(y, x))) {
 }
 
 function checkWinner() {
-  calcScores();
   if (playerX.count + playerO.count === 64) {
     console.info("All squares played!");
     return endGame();
