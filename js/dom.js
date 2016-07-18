@@ -28,6 +28,8 @@ $(function() {
     }
   });
 
+  $('#reset-button').on('click', resetBoard);
+
   // Set up board and start hover fn
   render();
   legalHover();
@@ -49,6 +51,7 @@ function render() {
   calcScores();
   $('#xscore').text(playerX.count);
   $('#oscore').text(playerO.count);
+  $('#turn').removeClass(notCurrent().name).addClass(current.name);
 }
 
 // Hover that tells who's turn and whether move is legal
