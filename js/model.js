@@ -15,9 +15,8 @@ function notCurrent() {
 // Current Turn varaible
 var current = playerX;       // playerO
 
-function switchPlayer(force = false) {
-  if (force) console.log(`Player ${current.name} cannot play!`);
-  current === playerX ? current = playerO : current = playerX;
+function switchPlayer() {
+  return current === playerX ? current = playerO : current = playerX;
 }
 
 // Board model
@@ -137,32 +136,36 @@ function anyValidMove(player = current) {
 }
 
 function commitMove(y, x, dirs = validMove(collectDirections(y, x))) {
-  if (dirs.length < 1 || !board[y,x]) return "You can't move there!";
+  if (dirs.length < 1 || !board[y,x]) {
+    console.log("No move!");
+    return false;
+  }
   board[y][x] = current.name;
   dirs.forEach(dir => {
     commitDirection(y, x, dir[0]);
   });
-  checkWinner();
+  return true;
 }
 
 function checkWinner() {
   calcScores();
   if (playerX.count + playerO.count === 64) {
-    return playerX.count > playerO.count
-         ? alert("Player X Wins!")
-         : (playerX.count === playerO.count ? alert("Tie!")
-                                            : alert("Player O Wins!"));
+    console.info("All squares played!");
+    return endGame();
   } else if (!anyValidMove(notCurrent())) {
-    console.warn(`Player ${notCurrent().name} couldn't move!`);
+    console.warn(`Player ${notCurrent().name} cannot play!`);
     if (!anyValidMove()){
-      console.log("No moves remaining!");
-      console.log(playerX.count > playerO.count ? "Player X Wins!" :
-                 (playerX.count === playerO.count ? "Tie!"
-                                                  : "Player O Wins!"));
+      console.info("No moves remaining!");
+      return endGame();
     }
   } else {
-    switchPlayer();
+    return switchPlayer();
   }
+}
+
+function endGame() {
+  return playerX.count > playerO.count ? "X"
+        : (playerX.count === playerO.count ? "T" : "O");
 }
 
 function calcScores() {
