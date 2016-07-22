@@ -33,6 +33,7 @@ $(function() {
   // Set up board and start hover fn
   render();
   legalHover();
+  startGame();
 });
 
 function fixId(id) {
@@ -80,4 +81,9 @@ var legalHover = function() {
 function resetBoard() {
   clearTheBoard();
   render();
+}
+
+function startGame() {
+  $('#title').fadeIn('slow');
+  $('.game-container').fadeIn(1200);
 }

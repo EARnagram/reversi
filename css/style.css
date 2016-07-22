@@ -24,6 +24,11 @@ h1 {
                2.5px 2.5px 9px white;
   color: gray;
   font-size: 4rem;
+  display: none;
+}
+
+.game-container {
+  display: none;
 }
 
 #game {
